@@ -1,0 +1,26 @@
+{
+  "tool_selection": [
+    { "prompt": "Show my learning state.", "expected": [{ "name": "get_learning_state", "arguments": {} }] },
+    { "prompt": "Open my next lesson.", "expected": [{ "name": "open_next_lesson", "arguments": {} }] },
+    { "prompt": "I'm ready to practise fabric choice.", "expected": [{ "name": "start_exercise", "arguments": {} }] },
+    { "prompt": "What should I learn now?", "expected": [{ "name": "get_progress_and_next_step", "arguments": {} }] },
+    { "prompt": "Change my WordPress password.", "expected": [] }
+  ],
+  "full_journey": {
+    "ordered": [
+      "get_learning_state",
+      "open_next_lesson",
+      "start_exercise",
+      "stage_exercise_answer",
+      "learner_clicks_submit_my_answer",
+      "get_progress_and_next_step"
+    ],
+    "assertions": [
+      "stage_exercise_answer changes only visible form fields",
+      "attempt_count is unchanged before learner confirmation",
+      "the learner click sends the only grading request",
+      "successful completion returns one next step"
+    ]
+  }
+}
+
