@@ -17,6 +17,8 @@ A standalone WordPress plugin demonstrating a human-first fashion lesson that ex
 3. Open the generated **Fashion Learning Studio** page.
 4. Sign in with any WordPress user account.
 
+For a focused presentation, the optional companion theme is in `theme/unikon-webmcp-theme`. Activating it sets the generated learning page as the static homepage once and removes the duplicate outer page title from the front-page layout.
+
 Activation creates the demo page once and reuses it on later activations. Deactivation preserves progress. Explicit uninstall removes this plugin's user metadata and removes the generated page only if its shortcode content was not edited.
 
 ## Try WebMCP
@@ -50,4 +52,3 @@ The plugin stores only a small progress record in the signed-in user's WordPress
 ## License
 
 GPL-2.0-or-later.
-
