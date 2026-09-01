@@ -12,9 +12,9 @@ The plugin must run independently of the proprietary Unikon eSchool plugin and t
 
 ## Workspace and reference boundaries
 
-- Build and modify files only in `/home/ginanisque/webmcp.ginani.net/unikon-webmcp-demo`.
-- Treat `/mnt/c/Users/GINANI-1/unikon_eschool_wp-main` as a read-only architectural reference.
-- Treat `/mnt/c/Users/GINANI-1/ginani-theme` as a read-only visual-design reference.
+- Build and modify files only in this standalone repository.
+- Treat the separately supplied proprietary eSchool project as a read-only architectural reference.
+- Treat the separately supplied Ginani theme as a read-only visual-design reference.
 - Do not modify, initialize Git in, or copy either proprietary reference project wholesale.
 - Do not copy proprietary course content, student records, business logic, media, branding assets, or substantial source code.
 - Reimplement only small, generic concepts required for this demonstration.
