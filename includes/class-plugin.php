@@ -62,6 +62,7 @@ final class Plugin {
 		$course_id = sanitize_key( $attributes['course'] );
 		if ( ! isset( Content::courses()[ $course_id ] ) ) $course_id = Content::COURSE_ID;
 		$course = Content::course( $course_id );
+		$assessments = Content::assessments( $course_id );
 		$state  = is_user_logged_in() ? $this->progress->get( get_current_user_id(), $course_id ) : null;
 		$summary = $state ? $this->progress->summary( $state ) : null;
 		$course_links = array();

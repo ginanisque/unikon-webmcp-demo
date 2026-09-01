@@ -75,23 +75,34 @@ defined( 'ABSPATH' ) || exit;
 			<div>
 				<p class="uwmcp-kicker"><?php esc_html_e( 'Apply what you learned', 'unikon-webmcp-demo' ); ?></p>
 				<h2 id="uwmcp-exercise-title"><?php echo esc_html( $course['exercise']['title'] ); ?></h2>
-				<p><?php echo esc_html( $course['exercise']['prompt'] ); ?></p>
-				<form data-exercise-form>
-					<fieldset>
-						<legend><?php esc_html_e( 'Choose one fabric', 'unikon-webmcp-demo' ); ?></legend>
-						<?php foreach ( $course['exercise']['choices'] as $value => $label ) : ?>
-							<label class="uwmcp-choice"><input type="radio" name="answer_id" value="<?php echo esc_attr( $value ); ?>" required> <span><?php echo esc_html( $label ); ?></span></label>
-						<?php endforeach; ?>
-					</fieldset>
-					<label for="uwmcp-reason"><strong><?php esc_html_e( 'Explain your choice', 'unikon-webmcp-demo' ); ?></strong></label>
-					<textarea id="uwmcp-reason" name="reason" rows="4" minlength="12" maxlength="<?php echo esc_attr( $course['exercise']['max_reason_length'] ); ?>" required></textarea>
-					<div class="uwmcp-confirmation" data-confirmation hidden tabindex="-1">
-						<strong><?php esc_html_e( 'Ready for your review', 'unikon-webmcp-demo' ); ?></strong>
-						<p><?php esc_html_e( 'An agent staged this answer. Check it carefully; nothing is graded or saved until you choose Submit my answer.', 'unikon-webmcp-demo' ); ?></p>
-					</div>
-					<button class="uwmcp-button" type="submit" data-submit-answer><?php esc_html_e( 'Submit my answer', 'unikon-webmcp-demo' ); ?></button>
-				</form>
-				<div class="uwmcp-feedback" data-feedback hidden tabindex="-1"></div>
+				<p><?php esc_html_e( 'Complete each layer in order. Passed work unlocks the next task; every confirmed attempt is saved to your course record.', 'unikon-webmcp-demo' ); ?></p>
+				<p class="uwmcp-submission-count"><strong data-submission-count><?php echo esc_html( count( $state['submissions'] ) ); ?></strong> <?php esc_html_e( 'submitted answers', 'unikon-webmcp-demo' ); ?></p>
+				<div class="uwmcp-assessment-list">
+				<?php foreach ( $assessments as $assessment ) :
+					$status = $state['activity_statuses'][ $assessment['id'] ] ?? 'locked';
+					$field_id = 'uwmcp-response-' . $assessment['id'];
+				?>
+					<article class="uwmcp-assessment" data-assessment="<?php echo esc_attr( $assessment['id'] ); ?>" data-status="<?php echo esc_attr( $status ); ?>" <?php echo 'locked' === $status ? 'hidden' : ''; ?>>
+						<p class="uwmcp-kicker"><?php echo esc_html( str_replace( '_', ' ', $assessment['type'] ) ); ?></p>
+						<h3><?php echo esc_html( $assessment['title'] ); ?></h3>
+						<p><?php echo esc_html( $assessment['prompt'] ); ?></p>
+						<?php if ( 'completed' === $status ) : ?><p class="uwmcp-complete-label"><?php esc_html_e( 'Passed', 'unikon-webmcp-demo' ); ?></p><?php endif; ?>
+						<form data-exercise-form data-activity-id="<?php echo esc_attr( $assessment['id'] ); ?>" <?php echo 'completed' === $status ? 'hidden' : ''; ?>>
+							<?php if ( $assessment['choices'] ) : ?>
+							<fieldset><legend><?php esc_html_e( 'Choose one answer', 'unikon-webmcp-demo' ); ?></legend>
+							<?php foreach ( $assessment['choices'] as $value => $label ) : ?>
+								<label class="uwmcp-choice"><input type="radio" name="answer_id" value="<?php echo esc_attr( $value ); ?>" required> <span><?php echo esc_html( $label ); ?></span></label>
+							<?php endforeach; ?></fieldset>
+							<?php endif; ?>
+							<label for="<?php echo esc_attr( $field_id ); ?>"><strong><?php echo 'essay' === $assessment['type'] ? esc_html__( 'Write your essay', 'unikon-webmcp-demo' ) : esc_html__( 'Explain your response', 'unikon-webmcp-demo' ); ?></strong></label>
+							<textarea id="<?php echo esc_attr( $field_id ); ?>" name="reason" rows="<?php echo 'essay' === $assessment['type'] ? '10' : '4'; ?>" minlength="<?php echo esc_attr( $assessment['min_length'] ); ?>" maxlength="<?php echo esc_attr( $assessment['max_length'] ); ?>" required></textarea>
+							<div class="uwmcp-confirmation" data-confirmation hidden tabindex="-1"><strong><?php esc_html_e( 'Ready for your review', 'unikon-webmcp-demo' ); ?></strong><p><?php esc_html_e( 'An agent staged this response. Nothing is graded or saved until you choose Submit my answer.', 'unikon-webmcp-demo' ); ?></p></div>
+							<button class="uwmcp-button" type="submit" data-submit-answer><?php esc_html_e( 'Submit my answer', 'unikon-webmcp-demo' ); ?></button>
+						</form>
+						<div class="uwmcp-feedback" data-feedback hidden tabindex="-1"></div>
+					</article>
+				<?php endforeach; ?>
+				</div>
 			</div>
 		</section>
 	<?php endif; ?>

@@ -35,17 +35,25 @@
   }
 
   function validateStagedAnswer(input) {
-    const allowed = ['answer_id', 'reason'];
+    const allowed = ['activity_id', 'answer_id', 'reason'];
     if (!input || typeof input !== 'object' || Array.isArray(input) || Object.keys(input).some((key) => !allowed.includes(key))) {
-      throw Object.assign(new Error('Use only answer_id and reason.'), { code: 'invalid_parameters' });
+      throw Object.assign(new Error('Use only activity_id, answer_id, and reason.'), { code: 'invalid_parameters' });
     }
-    if (!['cotton-poplin', 'silk-charmeuse', 'heavy-denim', 'coastal-movement', 'mixed-trends', 'logo-study'].includes(input.answer_id)) {
-      throw Object.assign(new Error('Choose one listed answer_id.'), { code: 'invalid_parameters' });
+    const activities = ['fabric-choice', 'design-signal', 'colour-story', 'silhouette-analysis', 'material-direction', 'moodboard-edit', 'collection-rationale'];
+    if (!activities.includes(input.activity_id)) {
+      throw Object.assign(new Error('Choose the current unlocked activity_id.'), { code: 'invalid_parameters' });
     }
-    if (typeof input.reason !== 'string' || input.reason.trim().length < 12 || input.reason.trim().length > 280) {
-      throw Object.assign(new Error('Reason must contain 12 to 280 characters.'), { code: 'invalid_parameters' });
+    if (input.answer_id !== undefined && typeof input.answer_id !== 'string') {
+      throw Object.assign(new Error('answer_id must be a listed identifier or omitted for an essay.'), { code: 'invalid_parameters' });
     }
-    return { answer_id: input.answer_id, reason: input.reason.trim() };
+    const answers = ['', 'cotton-poplin', 'silk-charmeuse', 'heavy-denim', 'repeated-curves', 'everything-coastal', 'current-trends', 'sand-blue-foam', 'rainbow', 'neon-metallic', 'coastal-movement', 'mixed-trends', 'logo-study'];
+    if (input.answer_id !== undefined && !answers.includes(input.answer_id)) {
+      throw Object.assign(new Error('answer_id must match a choice in the visible assessment.'), { code: 'invalid_parameters' });
+    }
+    if (typeof input.reason !== 'string' || input.reason.trim().length < 12 || input.reason.trim().length > 1200) {
+      throw Object.assign(new Error('Reason must contain 12 to 1200 characters.'), { code: 'invalid_parameters' });
+    }
+    return { activity_id: input.activity_id, answer_id: input.answer_id || '', reason: input.reason.trim() };
   }
 
   function definitions(app) {
@@ -91,30 +99,35 @@
       },
       {
         name: 'stage_exercise_answer',
-        description: 'Place a proposed fabric choice and reason into the visible exercise form for learner review. This never grades, submits, or saves the answer.',
+        description: 'Stage a proposed answer in one visible unlocked assessment for learner review. This never grades, submits, or saves the response.',
         inputSchema: {
           type: 'object',
           properties: {
+            activity_id: {
+              type: 'string',
+              enum: ['fabric-choice', 'design-signal', 'colour-story', 'silhouette-analysis', 'material-direction', 'moodboard-edit', 'collection-rationale'],
+              description: 'Identifier of the current unlocked assessment layer.',
+            },
             answer_id: {
               type: 'string',
-              enum: ['cotton-poplin', 'silk-charmeuse', 'heavy-denim', 'coastal-movement', 'mixed-trends', 'logo-study'],
-              description: 'Exact identifier of one answer listed in the current exercise.',
+              enum: ['', 'cotton-poplin', 'silk-charmeuse', 'heavy-denim', 'repeated-curves', 'everything-coastal', 'current-trends', 'sand-blue-foam', 'rainbow', 'neon-metallic', 'coastal-movement', 'mixed-trends', 'logo-study'],
+              description: 'Listed choice identifier; use an empty string for text-only work.',
             },
             reason: {
               type: 'string',
               minLength: 12,
-              maxLength: 280,
-              description: 'Plain-text reason connecting the choice to the lesson criteria.',
+              maxLength: 1200,
+              description: 'Plain-text response or essay addressing the assessment prompt.',
             },
           },
-          required: ['answer_id', 'reason'],
+          required: ['activity_id', 'reason'],
           additionalProperties: false,
         },
         annotations: { readOnlyHint: false, untrustedContentHint: true },
         async execute(input) {
           try {
             const answer = validateStagedAnswer(input);
-            const result = app.stageAnswer(answer.answer_id, answer.reason);
+            const result = app.stageAnswer(answer.activity_id, answer.answer_id, answer.reason);
             return mcpResult(result, 'Answer staged for review. The learner must click “Submit my answer” to grade and save it.');
           } catch (error) { return mcpError(error); }
         },

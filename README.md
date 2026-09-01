@@ -2,11 +2,12 @@
 
 A standalone WordPress plugin demonstrating a human-first fashion lesson that exposes five structured tools to in-browser agents through the experimental WebMCP API.
 
-Current plugin version: **0.2.0**.
+Current plugin version: **0.3.0**.
 
 ## What the demo includes
 
 - Two compact courses with one lesson and deterministic exercise each
+- A six-layer Fashion Design assessment path with quizzes, applied responses, a final essay, retries, and saved submission history
 - WordPress authentication and per-user progress
 - A normal accessible interface that works without WebMCP
 - Five WebMCP tools: learning state, lesson opening, exercise start, answer staging, and progress guidance

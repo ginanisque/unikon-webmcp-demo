@@ -12,7 +12,7 @@ Tools are registered only on the signed-in learning page, use same-origin defaul
 
 ## Data stored
 
-The plugin stores lesson status, exercise status, attempt count, selected answer identifier, feedback code, and update time under a separate namespaced user-meta key for each demo course. It does not store prompts, conversations, arbitrary HTML, or external profile data.
+The plugin stores lesson and activity status, bounded submission history, answer text, attempt number, feedback code, and submission time under a separate namespaced user-meta key for each demo course. Answer text is private to the authenticated learner and is never returned by WebMCP state tools. At most 30 recent submissions are retained per course. The plugin does not store agent conversations, arbitrary HTML, or external profile data.
 
 Deactivation retains progress. Explicit uninstall removes the namespaced user metadata. It deletes the generated page only if the page still contains exactly the plugin shortcode, preserving a page that an administrator has edited.
 

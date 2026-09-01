@@ -78,6 +78,79 @@ final class Content {
 		);
 	}
 
+	/** Return ordered assessments for a course. @return array<int,array<string,mixed>> */
+	public static function assessments( $course_id ) {
+		$course = self::course( $course_id );
+		if ( self::DESIGN_COURSE_ID !== $course_id ) {
+			return array(
+				array(
+					'id' => self::EXERCISE_ID, 'type' => 'choice', 'title' => $course['exercise']['title'],
+					'prompt' => $course['exercise']['prompt'], 'choices' => $course['exercise']['choices'],
+					'min_length' => 12, 'max_length' => 280, 'correct' => 'cotton-poplin',
+					'keywords' => array( 'stable', 'stability', 'weight', 'light', 'medium', 'drape', 'structure', 'beginner', 'silhouette', 'sew', 'cut', 'press' ),
+				),
+			);
+		}
+
+		return array(
+			array(
+				'id' => 'design-signal', 'type' => 'choice', 'title' => __( 'Layer 1: Find the design signal', 'unikon-webmcp-demo' ),
+				'prompt' => __( 'Which observation gives the clearest starting signal for a coastal-wind collection?', 'unikon-webmcp-demo' ),
+				'choices' => array( 'repeated-curves' => __( 'Repeated curved lines in wind-shaped dunes', 'unikon-webmcp-demo' ), 'everything-coastal' => __( 'Every image associated with a beach', 'unikon-webmcp-demo' ), 'current-trends' => __( 'A list of unrelated current trends', 'unikon-webmcp-demo' ) ),
+				'min_length' => 12, 'max_length' => 280, 'correct' => 'repeated-curves', 'keywords' => array( 'line', 'curve', 'movement', 'repeat', 'specific', 'shape', 'wind' ),
+			),
+			array(
+				'id' => 'colour-story', 'type' => 'choice', 'title' => __( 'Layer 2: Edit the colour story', 'unikon-webmcp-demo' ),
+				'prompt' => __( 'Which palette best supports a coherent coastal-wind direction?', 'unikon-webmcp-demo' ),
+				'choices' => array( 'sand-blue-foam' => __( 'Sand, deep blue, and foam white', 'unikon-webmcp-demo' ), 'rainbow' => __( 'Every hue at equal intensity', 'unikon-webmcp-demo' ), 'neon-metallic' => __( 'Neon pink, chrome, and bright orange', 'unikon-webmcp-demo' ) ),
+				'min_length' => 12, 'max_length' => 280, 'correct' => 'sand-blue-foam', 'keywords' => array( 'palette', 'colour', 'color', 'coastal', 'limited', 'coherent', 'sand', 'blue', 'foam' ),
+			),
+			array(
+				'id' => 'silhouette-analysis', 'type' => 'short_answer', 'title' => __( 'Layer 3: Silhouette analysis', 'unikon-webmcp-demo' ),
+				'prompt' => __( 'In two or three sentences, describe how shape and movement could express coastal wind in a garment.', 'unikon-webmcp-demo' ),
+				'choices' => array(), 'min_length' => 40, 'max_length' => 420, 'correct' => null, 'keywords' => array( 'silhouette', 'shape', 'line', 'layer', 'flow', 'movement', 'volume', 'drape', 'wind' ),
+			),
+			array(
+				'id' => 'material-direction', 'type' => 'short_answer', 'title' => __( 'Layer 4: Material direction', 'unikon-webmcp-demo' ),
+				'prompt' => __( 'Recommend a material quality for the concept and explain what it contributes.', 'unikon-webmcp-demo' ),
+				'choices' => array(), 'min_length' => 40, 'max_length' => 420, 'correct' => null, 'keywords' => array( 'material', 'fabric', 'light', 'texture', 'drape', 'sheer', 'fluid', 'movement', 'structure' ),
+			),
+			array(
+				'id' => 'moodboard-edit', 'type' => 'choice', 'title' => __( 'Layer 5: Mood-board edit', 'unikon-webmcp-demo' ),
+				'prompt' => __( 'Which mood-board approach is ready to guide a collection?', 'unikon-webmcp-demo' ),
+				'choices' => array( 'coastal-movement' => __( 'Flowing layers, a sand-and-blue palette, and lightweight textured cloth', 'unikon-webmcp-demo' ), 'mixed-trends' => __( 'Neon tailoring, floral sportswear, metallic eveningwear, and denim basics', 'unikon-webmcp-demo' ), 'logo-study' => __( 'A board made only from fashion-brand logos', 'unikon-webmcp-demo' ) ),
+				'min_length' => 20, 'max_length' => 320, 'correct' => 'coastal-movement', 'keywords' => array( 'coherent', 'flow', 'movement', 'palette', 'material', 'texture', 'coastal', 'focused' ),
+			),
+			array(
+				'id' => 'collection-rationale', 'type' => 'essay', 'title' => __( 'Final essay: Collection rationale', 'unikon-webmcp-demo' ),
+				'prompt' => __( 'Write a short design rationale connecting inspiration, silhouette, colour, and material into one collection direction. Include one choice you deliberately excluded.', 'unikon-webmcp-demo' ),
+				'choices' => array(), 'min_length' => 120, 'max_length' => 1200, 'correct' => null,
+				'keywords' => array( 'inspiration', 'silhouette', 'shape', 'colour', 'color', 'palette', 'material', 'fabric', 'excluded', 'removed', 'coherent', 'collection' ),
+			),
+		);
+	}
+
+	/** Evaluate one assessment with a deterministic minimum-evidence rubric. */
+	public static function evaluate_assessment( $course_id, $activity_id, $answer_id, $response ) {
+		$assessment = null;
+		foreach ( self::assessments( $course_id ) as $item ) if ( $item['id'] === $activity_id ) $assessment = $item;
+		if ( ! $assessment ) return new \WP_Error( 'invalid_activity', __( 'That assessment does not exist in this course.', 'unikon-webmcp-demo' ), array( 'status' => 400 ) );
+		$length = function_exists( 'mb_strlen' ) ? mb_strlen( $response ) : strlen( $response );
+		$normalized = strtolower( remove_accents( $response ) );
+		$matches = 0;
+		foreach ( $assessment['keywords'] as $keyword ) if ( false !== strpos( $normalized, $keyword ) ) ++$matches;
+		$choice_ok = null === $assessment['correct'] || $assessment['correct'] === $answer_id;
+		$needed = 'essay' === $assessment['type'] ? 3 : 1;
+		$passed = $choice_ok && $length >= $assessment['min_length'] && $matches >= $needed;
+		return array(
+			'passed' => $passed,
+			'feedback_code' => $passed ? 'passed' : ( $choice_ok ? 'expand_response' : 'review_choice' ),
+			'feedback' => $passed
+				? __( 'This response meets the layer criteria. Continue to the next assessment.', 'unikon-webmcp-demo' )
+				: __( 'Review this layer and strengthen the response with specific evidence from its prompt before trying again.', 'unikon-webmcp-demo' ),
+		);
+	}
+
 	/**
 	 * Evaluate an answer using a small, deterministic rubric.
 	 *

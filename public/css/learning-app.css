@@ -45,6 +45,11 @@
 .uwmcp-app textarea { display: block; width: 100%; margin: .5rem 0 1rem; border: 1px solid #98a2b3; border-radius: 12px; padding: .8rem; color: var(--uwmcp-ink); font: inherit; }
 .uwmcp-confirmation, .uwmcp-feedback { margin: 1rem 0; padding: 1rem; border-left: 4px solid var(--uwmcp-accent); border-radius: 8px; background: #fffaeb; }
 .uwmcp-feedback.is-success { border-color: #12b76a; background: #ecfdf3; }
+.uwmcp-submission-count { color: var(--uwmcp-muted); }
+.uwmcp-assessment-list { display: grid; gap: 1rem; margin-top: 1.5rem; }
+.uwmcp-assessment { padding: clamp(1.25rem, 4vw, 2rem); border: 1px solid var(--uwmcp-line); border-radius: 18px; background: var(--uwmcp-surface); }
+.uwmcp-assessment h3 { margin: .35rem 0 .8rem; color: var(--uwmcp-brand); font-size: 1.35rem; }
+.uwmcp-complete-label { display: inline-flex; padding: .3rem .65rem; border-radius: 999px; background: #ecfdf3; color: #067647; font-weight: 800; }
 .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 [hidden] { display: none !important; }
 @media (max-width: 700px) {

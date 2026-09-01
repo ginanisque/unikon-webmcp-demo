@@ -33,7 +33,7 @@ final class Unikon_WebMCP_REST_Test extends WP_UnitTestCase {
 		$user = self::factory()->user->create();
 		wp_set_current_user( $user );
 		$nonce = wp_create_nonce( 'wp_rest' );
-		$response = $this->request( 'POST', 'exercise/submit', array( 'answer_id' => 'unknown', 'reason' => 'short', 'extra' => true ), $nonce );
+		$response = $this->request( 'POST', 'exercise/submit', array( 'activity_id' => 'unknown', 'answer_id' => 'unknown', 'reason' => 'short', 'extra' => true ), $nonce );
 		$this->assertSame( 400, $response->get_status() );
 	}
 
@@ -44,6 +44,7 @@ final class Unikon_WebMCP_REST_Test extends WP_UnitTestCase {
 		$this->request( 'POST', 'lesson/open', array(), $nonce );
 		$this->request( 'POST', 'exercise/start', array(), $nonce );
 		$response = $this->request( 'POST', 'exercise/submit', array(
+			'activity_id' => 'fabric-choice',
 			'answer_id' => 'cotton-poplin',
 			'reason'    => 'Its stable medium weight holds a clear silhouette.',
 		), $nonce );
@@ -51,4 +52,3 @@ final class Unikon_WebMCP_REST_Test extends WP_UnitTestCase {
 		$this->assertTrue( $response->get_data()['evaluation']['passed'] );
 	}
 }
-

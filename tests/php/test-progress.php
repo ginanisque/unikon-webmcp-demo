@@ -16,7 +16,7 @@ final class Unikon_WebMCP_Progress_Test extends WP_UnitTestCase {
 		$this->assertSame( 'not_started', $this->progress->get( $user )['lesson_status'] );
 		$this->assertSame( 'in_progress', $this->progress->open_lesson( $user )['lesson_status'] );
 		$this->assertSame( 'in_progress', $this->progress->start_exercise( $user )['exercise_status'] );
-		$result = $this->progress->submit( $user, 'cotton-poplin', 'It is stable and light enough to hold the silhouette.' );
+		$result = $this->progress->submit( $user, 'fabric-choice', 'cotton-poplin', 'It is stable and light enough to hold the silhouette.' );
 		$this->assertTrue( $result['evaluation']['passed'] );
 		$this->assertSame( 'completed', $result['state']['exercise_status'] );
 	}
@@ -24,7 +24,7 @@ final class Unikon_WebMCP_Progress_Test extends WP_UnitTestCase {
 	public function test_rejects_prerequisite_skip() {
 		$user = self::factory()->user->create();
 		$this->assertWPError( $this->progress->start_exercise( $user ) );
-		$this->assertWPError( $this->progress->submit( $user, 'cotton-poplin', 'It is stable and manageable for a beginner.' ) );
+		$this->assertWPError( $this->progress->submit( $user, 'fabric-choice', 'cotton-poplin', 'It is stable and manageable for a beginner.' ) );
 	}
 
 	public function test_scoring_is_deterministic() {
@@ -46,14 +46,22 @@ final class Unikon_WebMCP_Progress_Test extends WP_UnitTestCase {
 		$user = self::factory()->user->create();
 		$this->progress->open_lesson( $user, Ginani\UnikonWebMCPDemo\Content::DESIGN_COURSE_ID );
 		$this->progress->start_exercise( $user, Ginani\UnikonWebMCPDemo\Content::DESIGN_COURSE_ID );
+		$failed = $this->progress->submit(
+			$user, 'design-signal', 'current-trends', 'Current trends might offer movement and shape.',
+			Ginani\UnikonWebMCPDemo\Content::DESIGN_COURSE_ID
+		);
+		$this->assertFalse( $failed['evaluation']['passed'] );
 		$result = $this->progress->submit(
 			$user,
-			'coastal-movement',
-			'The flowing silhouette and limited coastal palette make the direction coherent.',
+			'design-signal',
+			'repeated-curves',
+			'The repeated curved line creates a specific shape and movement signal.',
 			Ginani\UnikonWebMCPDemo\Content::DESIGN_COURSE_ID
 		);
 		$this->assertTrue( $result['evaluation']['passed'] );
-		$this->assertSame( 'completed', $this->progress->get( $user, Ginani\UnikonWebMCPDemo\Content::DESIGN_COURSE_ID )['exercise_status'] );
+		$this->assertSame( 'completed', $this->progress->get( $user, Ginani\UnikonWebMCPDemo\Content::DESIGN_COURSE_ID )['activity_statuses']['design-signal'] );
+		$this->assertCount( 2, $this->progress->get( $user, Ginani\UnikonWebMCPDemo\Content::DESIGN_COURSE_ID )['submissions'] );
+		$this->assertSame( 'in_progress', $this->progress->get( $user, Ginani\UnikonWebMCPDemo\Content::DESIGN_COURSE_ID )['activity_statuses']['colour-story'] );
 		$this->assertSame( 'not_started', $this->progress->get( $user )['lesson_status'] );
 	}
 }

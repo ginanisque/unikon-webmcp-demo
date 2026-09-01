@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Unikon WebMCP Fashion eSchool Demo
  * Description: A standalone agent-assisted fashion learning demo for WordPress and WebMCP.
- * Version: 0.2.0
+ * Version: 0.3.0
  * Requires at least: 6.4
  * Requires PHP: 7.4
  * Author: Ginani
@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'UNIKON_WEBMCP_DEMO_VERSION', '0.2.0' );
+define( 'UNIKON_WEBMCP_DEMO_VERSION', '0.3.0' );
 define( 'UNIKON_WEBMCP_DEMO_FILE', __FILE__ );
 define( 'UNIKON_WEBMCP_DEMO_DIR', plugin_dir_path( __FILE__ ) );
 define( 'UNIKON_WEBMCP_DEMO_URL', plugin_dir_url( __FILE__ ) );

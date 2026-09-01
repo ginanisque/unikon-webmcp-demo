@@ -67,12 +67,12 @@ test('staging changes only the visible form adapter', async () => {
   let staged;
   let requests = 0;
   const app = {
-    stageAnswer(answerId, reason) { staged = { answerId, reason }; return { staged: true, committed: false }; },
+    stageAnswer(activityId, answerId, reason) { staged = { activityId, answerId, reason }; return { staged: true, committed: false }; },
     request() { requests += 1; },
   };
   const tool = tools.definitions(app).find((item) => item.name === 'stage_exercise_answer');
-  const result = await tool.execute({ answer_id: 'cotton-poplin', reason: 'Stable and light enough to hold the silhouette.' });
-  assert.deepEqual(staged, { answerId: 'cotton-poplin', reason: 'Stable and light enough to hold the silhouette.' });
+  const result = await tool.execute({ activity_id: 'fabric-choice', answer_id: 'cotton-poplin', reason: 'Stable and light enough to hold the silhouette.' });
+  assert.deepEqual(staged, { activityId: 'fabric-choice', answerId: 'cotton-poplin', reason: 'Stable and light enough to hold the silhouette.' });
   assert.equal(requests, 0);
   assert.equal(result.structuredContent.committed, false);
 });
@@ -80,7 +80,7 @@ test('staging changes only the visible form adapter', async () => {
 test('invalid staged answers return an MCP error result', async () => {
   const tools = loadTools();
   const tool = tools.definitions({ stageAnswer() { throw new Error('must not run'); } }).find((item) => item.name === 'stage_exercise_answer');
-  const result = await tool.execute({ answer_id: 'unknown', reason: 'too short' });
+  const result = await tool.execute({ activity_id: 'unknown', answer_id: 'unknown', reason: 'too short' });
   assert.equal(result.isError, true);
   assert.equal(result.structuredContent.code, 'invalid_parameters');
 });

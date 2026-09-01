@@ -47,17 +47,23 @@ final class Rest_Controller {
 				'callback'            => array( $this, 'submit_exercise' ),
 				'permission_callback' => array( $this, 'permissions_check' ),
 				'args'                => array(
-					'answer_id' => array(
+					'activity_id' => array(
 						'required'          => true,
 						'type'              => 'string',
-						'enum'              => array( 'cotton-poplin', 'silk-charmeuse', 'heavy-denim', 'coastal-movement', 'mixed-trends', 'logo-study' ),
+						'sanitize_callback' => 'sanitize_key',
+					),
+					'answer_id' => array(
+						'required'          => false,
+						'default'           => '',
+						'type'              => 'string',
+						'enum'              => array( '', 'cotton-poplin', 'silk-charmeuse', 'heavy-denim', 'repeated-curves', 'everything-coastal', 'current-trends', 'sand-blue-foam', 'rainbow', 'neon-metallic', 'coastal-movement', 'mixed-trends', 'logo-study' ),
 						'sanitize_callback' => 'sanitize_key',
 					),
 					'reason'    => array(
 						'required'          => true,
 						'type'              => 'string',
 						'minLength'         => 12,
-						'maxLength'         => 280,
+						'maxLength'         => 1200,
 						'sanitize_callback' => 'sanitize_textarea_field',
 					),
 				),
@@ -102,13 +108,13 @@ final class Rest_Controller {
 	/** @return \WP_REST_Response|\WP_Error */
 	public function submit_exercise( \WP_REST_Request $request ) {
 		$body    = $request->get_json_params();
-		$allowed = array( 'answer_id', 'reason' );
+		$allowed = array( 'activity_id', 'answer_id', 'reason' );
 		if ( ! is_array( $body ) || array_diff( array_keys( $body ), $allowed ) ) {
 			return new \WP_Error( 'invalid_parameters', __( 'The answer contains unsupported fields.', 'unikon-webmcp-demo' ), array( 'status' => 400 ) );
 		}
 
 		$course_id = $this->course_id();
-		$result = $this->progress->submit( get_current_user_id(), $request['answer_id'], $request['reason'], $course_id );
+		$result = $this->progress->submit( get_current_user_id(), $request['activity_id'], $request['answer_id'], $request['reason'], $course_id );
 		if ( is_wp_error( $result ) ) {
 			return $result;
 		}
@@ -130,10 +136,18 @@ final class Rest_Controller {
 	/** @return array<string,mixed> */
 	private function payload( $state, $course_id ) {
 		$course = Content::course( $course_id );
+		$assessments = array_map( static function ( $assessment ) use ( $state ) {
+			return array(
+				'id' => $assessment['id'], 'title' => $assessment['title'], 'type' => $assessment['type'],
+				'status' => $state['activity_statuses'][ $assessment['id'] ] ?? 'locked',
+			);
+		}, Content::assessments( $course_id ) );
 		return array(
 			'course'          => array( 'id' => $course['id'], 'title' => $course['title'] ),
 			'lesson'          => array( 'id' => $course['lesson']['id'], 'title' => $course['lesson']['title'], 'status' => $state['lesson_status'] ),
 			'exercise'        => array( 'id' => $course['exercise']['id'], 'title' => $course['exercise']['title'], 'status' => $state['exercise_status'], 'attempt_count' => $state['attempt_count'] ),
+			'assessments'     => $assessments,
+			'submission_count' => count( $state['submissions'] ),
 			'allowed_actions' => $this->allowed_actions( $state ),
 			'progress'        => $this->progress->summary( $state ),
 		);

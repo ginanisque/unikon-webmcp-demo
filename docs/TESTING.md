@@ -16,8 +16,8 @@ Install the standard WordPress PHPUnit test library and set `WP_TESTS_DIR`, then
 4. Invoke every tool once and check its visible UI effect.
 5. Stage an answer and verify progress and attempt count do not change.
 6. Click **Submit my answer** and verify that only this click grades and persists it.
-7. Repeat with a second WordPress user and confirm isolated progress.
-8. Repeat signed out, with keyboard navigation, at narrow width, and in a browser without WebMCP.
+7. Complete each Fashion Design layer in order, retry one failed response, and verify the final essay unlocks only after the earlier layers pass.
+8. Repeat with a second WordPress user and confirm isolated progress.
+9. Repeat signed out, with keyboard navigation, at narrow width, and in a browser without WebMCP.
 
 The prompt expectations and ordered journey are recorded in `tests/evals/journeys.json`.
-
