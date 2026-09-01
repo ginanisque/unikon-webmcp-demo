@@ -2,6 +2,8 @@
 
 A standalone WordPress plugin demonstrating a human-first fashion lesson that exposes five structured tools to in-browser agents through the experimental WebMCP API.
 
+Current plugin version: **0.1.1**.
+
 ## What the demo includes
 
 - One original course, lesson, and deterministic fabric-choice exercise

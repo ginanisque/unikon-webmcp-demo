@@ -2,8 +2,22 @@
   'use strict';
 
   const root = document.querySelector('[data-uwmcp-app]');
-  const config = window.UnikonWebMCPDemo;
-  if (!root || !config) return;
+  if (!root) return;
+
+  const localized = window.UnikonWebMCPDemo || {};
+  const config = {
+    root: localized.root || root.dataset.restRoot || '',
+    nonce: localized.nonce || root.dataset.restNonce || '',
+    authenticated: typeof localized.authenticated === 'boolean'
+      ? localized.authenticated
+      : root.dataset.authenticated === 'true',
+  };
+
+  if (!config.root) {
+    const status = root.querySelector('[data-agent-status]');
+    if (status) status.lastChild.textContent = 'Learning service configuration is unavailable.';
+    return;
+  }
 
   const live = root.querySelector('[data-live-region]');
 
@@ -146,4 +160,3 @@
 
   window.UnikonLearningApp = { request, applyState, openLesson, startExercise, stageAnswer, announce };
 }());
-

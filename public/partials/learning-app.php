@@ -4,7 +4,13 @@
 /** @var array<string,mixed>|null $summary */
 defined( 'ABSPATH' ) || exit;
 ?>
-<main class="uwmcp-app" data-uwmcp-app data-authenticated="<?php echo is_user_logged_in() ? 'true' : 'false'; ?>">
+<main
+	class="uwmcp-app"
+	data-uwmcp-app
+	data-authenticated="<?php echo is_user_logged_in() ? 'true' : 'false'; ?>"
+	data-rest-root="<?php echo esc_url( rest_url( 'unikon-webmcp-demo/v1/' ) ); ?>"
+	data-rest-nonce="<?php echo is_user_logged_in() ? esc_attr( wp_create_nonce( 'wp_rest' ) ) : ''; ?>"
+>
 	<header class="uwmcp-hero">
 		<p class="uwmcp-eyebrow"><?php esc_html_e( 'Agent-assisted fashion learning', 'unikon-webmcp-demo' ); ?></p>
 		<h1><?php echo esc_html( $course['title'] ); ?></h1>
@@ -80,4 +86,3 @@ defined( 'ABSPATH' ) || exit;
 		</section>
 	<?php endif; ?>
 </main>
-
