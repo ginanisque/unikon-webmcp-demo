@@ -2,11 +2,11 @@
 
 A standalone WordPress plugin demonstrating a human-first fashion lesson that exposes five structured tools to in-browser agents through the experimental WebMCP API.
 
-Current plugin version: **0.1.1**.
+Current plugin version: **0.2.0**.
 
 ## What the demo includes
 
-- One original course, lesson, and deterministic fabric-choice exercise
+- Two compact courses with one lesson and deterministic exercise each
 - WordPress authentication and per-user progress
 - A normal accessible interface that works without WebMCP
 - Five WebMCP tools: learning state, lesson opening, exercise start, answer staging, and progress guidance
@@ -21,7 +21,7 @@ Current plugin version: **0.1.1**.
 
 For a focused presentation, the optional companion theme is in `theme/unikon-webmcp-theme`. Activating it sets the generated learning page as the static homepage once and removes the duplicate outer page title from the front-page layout.
 
-Activation creates the demo page once and reuses it on later activations. Deactivation preserves progress. Explicit uninstall removes this plugin's user metadata and removes the generated page only if its shortcode content was not edited.
+Activation creates the main learning page and a separate Fashion Design Studio course page, then reuses them on later activations. Deactivation preserves progress. Explicit uninstall removes this plugin's user metadata and removes generated pages only when their shortcode content was not edited.
 
 ## Try WebMCP
 

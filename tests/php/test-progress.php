@@ -41,5 +41,19 @@ final class Unikon_WebMCP_Progress_Test extends WP_UnitTestCase {
 		$this->assertSame( 'in_progress', $this->progress->get( $first )['lesson_status'] );
 		$this->assertSame( 'not_started', $this->progress->get( $second )['lesson_status'] );
 	}
-}
 
+	public function test_courses_have_independent_progress_and_scoring() {
+		$user = self::factory()->user->create();
+		$this->progress->open_lesson( $user, Ginani\UnikonWebMCPDemo\Content::DESIGN_COURSE_ID );
+		$this->progress->start_exercise( $user, Ginani\UnikonWebMCPDemo\Content::DESIGN_COURSE_ID );
+		$result = $this->progress->submit(
+			$user,
+			'coastal-movement',
+			'The flowing silhouette and limited coastal palette make the direction coherent.',
+			Ginani\UnikonWebMCPDemo\Content::DESIGN_COURSE_ID
+		);
+		$this->assertTrue( $result['evaluation']['passed'] );
+		$this->assertSame( 'completed', $this->progress->get( $user, Ginani\UnikonWebMCPDemo\Content::DESIGN_COURSE_ID )['exercise_status'] );
+		$this->assertSame( 'not_started', $this->progress->get( $user )['lesson_status'] );
+	}
+}

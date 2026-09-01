@@ -8,10 +8,20 @@ defined( 'ABSPATH' ) || exit;
 	class="uwmcp-app"
 	data-uwmcp-app
 	data-authenticated="<?php echo is_user_logged_in() ? 'true' : 'false'; ?>"
+	data-course-id="<?php echo esc_attr( $course['id'] ); ?>"
 	data-rest-root="<?php echo esc_url( rest_url( 'unikon-webmcp-demo/v1/' ) ); ?>"
 	data-rest-nonce="<?php echo is_user_logged_in() ? esc_attr( wp_create_nonce( 'wp_rest' ) ) : ''; ?>"
 >
 	<header class="uwmcp-hero">
+		<?php if ( count( $course_links ) > 1 ) : ?>
+			<nav class="uwmcp-course-nav" aria-label="<?php esc_attr_e( 'Demo courses', 'unikon-webmcp-demo' ); ?>">
+				<?php foreach ( \Ginani\UnikonWebMCPDemo\Content::courses() as $nav_id => $nav_course ) : ?>
+					<?php if ( isset( $course_links[ $nav_id ] ) ) : ?>
+						<a href="<?php echo esc_url( $course_links[ $nav_id ] ); ?>" <?php echo $nav_id === $course['id'] ? 'aria-current="page"' : ''; ?>><?php echo esc_html( $nav_course['title'] ); ?></a>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</nav>
+		<?php endif; ?>
 		<p class="uwmcp-eyebrow"><?php esc_html_e( 'Agent-assisted fashion learning', 'unikon-webmcp-demo' ); ?></p>
 		<h1><?php echo esc_html( $course['title'] ); ?></h1>
 		<p><?php echo esc_html( $course['description'] ); ?></p>

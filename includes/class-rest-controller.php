@@ -50,7 +50,7 @@ final class Rest_Controller {
 					'answer_id' => array(
 						'required'          => true,
 						'type'              => 'string',
-						'enum'              => array( 'cotton-poplin', 'silk-charmeuse', 'heavy-denim' ),
+						'enum'              => array( 'cotton-poplin', 'silk-charmeuse', 'heavy-denim', 'coastal-movement', 'mixed-trends', 'logo-study' ),
 						'sanitize_callback' => 'sanitize_key',
 					),
 					'reason'    => array(
@@ -82,18 +82,21 @@ final class Rest_Controller {
 
 	/** @return \WP_REST_Response */
 	public function get_state() {
-		return rest_ensure_response( $this->payload( $this->progress->get( get_current_user_id() ) ) );
+		$course_id = $this->course_id();
+		return rest_ensure_response( $this->payload( $this->progress->get( get_current_user_id(), $course_id ), $course_id ) );
 	}
 
 	/** @return \WP_REST_Response */
 	public function open_lesson() {
-		return rest_ensure_response( $this->payload( $this->progress->open_lesson( get_current_user_id() ) ) );
+		$course_id = $this->course_id();
+		return rest_ensure_response( $this->payload( $this->progress->open_lesson( get_current_user_id(), $course_id ), $course_id ) );
 	}
 
 	/** @return \WP_REST_Response|\WP_Error */
 	public function start_exercise() {
-		$state = $this->progress->start_exercise( get_current_user_id() );
-		return is_wp_error( $state ) ? $state : rest_ensure_response( $this->payload( $state ) );
+		$course_id = $this->course_id();
+		$state = $this->progress->start_exercise( get_current_user_id(), $course_id );
+		return is_wp_error( $state ) ? $state : rest_ensure_response( $this->payload( $state, $course_id ) );
 	}
 
 	/** @return \WP_REST_Response|\WP_Error */
@@ -104,14 +107,15 @@ final class Rest_Controller {
 			return new \WP_Error( 'invalid_parameters', __( 'The answer contains unsupported fields.', 'unikon-webmcp-demo' ), array( 'status' => 400 ) );
 		}
 
-		$result = $this->progress->submit( get_current_user_id(), $request['answer_id'], $request['reason'] );
+		$course_id = $this->course_id();
+		$result = $this->progress->submit( get_current_user_id(), $request['answer_id'], $request['reason'], $course_id );
 		if ( is_wp_error( $result ) ) {
 			return $result;
 		}
 
 		return rest_ensure_response(
 			array(
-				'state'      => $this->payload( $result['state'] ),
+				'state'      => $this->payload( $result['state'], $course_id ),
 				'evaluation' => $result['evaluation'],
 			)
 		);
@@ -119,13 +123,13 @@ final class Rest_Controller {
 
 	/** @return \WP_REST_Response */
 	public function get_progress() {
-		$state = $this->progress->get( get_current_user_id() );
+		$state = $this->progress->get( get_current_user_id(), $this->course_id() );
 		return rest_ensure_response( $this->progress->summary( $state ) );
 	}
 
 	/** @return array<string,mixed> */
-	private function payload( $state ) {
-		$course = Content::course();
+	private function payload( $state, $course_id ) {
+		$course = Content::course( $course_id );
 		return array(
 			'course'          => array( 'id' => $course['id'], 'title' => $course['title'] ),
 			'lesson'          => array( 'id' => $course['lesson']['id'], 'title' => $course['lesson']['title'], 'status' => $state['lesson_status'] ),
@@ -133,6 +137,11 @@ final class Rest_Controller {
 			'allowed_actions' => $this->allowed_actions( $state ),
 			'progress'        => $this->progress->summary( $state ),
 		);
+	}
+
+	private function course_id() {
+		$course_id = sanitize_key( isset( $_SERVER['HTTP_X_UNIKON_COURSE'] ) ? wp_unslash( $_SERVER['HTTP_X_UNIKON_COURSE'] ) : '' );
+		return isset( Content::courses()[ $course_id ] ) ? $course_id : Content::COURSE_ID;
 	}
 
 	/** @return string[] */

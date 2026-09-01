@@ -28,6 +28,7 @@
       headers: {
         'Content-Type': 'application/json',
         'X-WP-Nonce': config.nonce,
+        'X-Unikon-Course': root.dataset.courseId || 'fashion-foundations',
         ...(options.headers || {}),
       },
     });

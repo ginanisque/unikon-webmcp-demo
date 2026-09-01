@@ -7,11 +7,13 @@ const vm = require('node:vm');
 test('uses DOM REST configuration when WordPress inline localization is absent', async () => {
   let requestedUrl;
   let requestedNonce;
+  let requestedCourse;
   const root = {
     dataset: {
       authenticated: 'true',
       restRoot: 'https://example.test/wp-json/unikon-webmcp-demo/v1/',
       restNonce: 'dom-nonce',
+      courseId: 'fashion-design-studio',
     },
     querySelector() { return null; },
     addEventListener() {},
@@ -22,6 +24,7 @@ test('uses DOM REST configuration when WordPress inline localization is absent',
   const fetch = async (url, options) => {
     requestedUrl = url;
     requestedNonce = options.headers['X-WP-Nonce'];
+    requestedCourse = options.headers['X-Unikon-Course'];
     return { ok: true, async json() { return { progress: { percent: 0, next_step: { label: 'Open lesson' } } }; } };
   };
   const context = vm.createContext({ console, CustomEvent: class {}, document, fetch, FormData: class {}, setTimeout, window });
@@ -32,5 +35,5 @@ test('uses DOM REST configuration when WordPress inline localization is absent',
   await window.UnikonLearningApp.request('state');
   assert.equal(requestedUrl, 'https://example.test/wp-json/unikon-webmcp-demo/v1/state');
   assert.equal(requestedNonce, 'dom-nonce');
+  assert.equal(requestedCourse, 'fashion-design-studio');
 });
-

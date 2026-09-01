@@ -3,7 +3,7 @@ Theme Name: Unikon WebMCP Studio
 Theme URI: https://webmcp.ginani.net/
 Author: Ginani
 Description: A minimal companion block theme focused on the Unikon WebMCP Fashion Learning Studio.
-Version: 0.1.0
+Version: 0.2.0
 Requires at least: 6.4
 Requires PHP: 7.4
 License: GNU General Public License v2 or later
@@ -49,4 +49,3 @@ body.home .uwmcp-app { margin-top: 0; }
   .uwmcp-theme-header .wp-block-group { padding-right: 1rem !important; padding-left: 1rem !important; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-

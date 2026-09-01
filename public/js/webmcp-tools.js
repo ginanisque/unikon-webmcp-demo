@@ -39,7 +39,7 @@
     if (!input || typeof input !== 'object' || Array.isArray(input) || Object.keys(input).some((key) => !allowed.includes(key))) {
       throw Object.assign(new Error('Use only answer_id and reason.'), { code: 'invalid_parameters' });
     }
-    if (!['cotton-poplin', 'silk-charmeuse', 'heavy-denim'].includes(input.answer_id)) {
+    if (!['cotton-poplin', 'silk-charmeuse', 'heavy-denim', 'coastal-movement', 'mixed-trends', 'logo-study'].includes(input.answer_id)) {
       throw Object.assign(new Error('Choose one listed answer_id.'), { code: 'invalid_parameters' });
     }
     if (typeof input.reason !== 'string' || input.reason.trim().length < 12 || input.reason.trim().length > 280) {
@@ -97,14 +97,14 @@
           properties: {
             answer_id: {
               type: 'string',
-              enum: ['cotton-poplin', 'silk-charmeuse', 'heavy-denim'],
-              description: 'Exact identifier of one listed fabric.',
+              enum: ['cotton-poplin', 'silk-charmeuse', 'heavy-denim', 'coastal-movement', 'mixed-trends', 'logo-study'],
+              description: 'Exact identifier of one answer listed in the current exercise.',
             },
             reason: {
               type: 'string',
               minLength: 12,
               maxLength: 280,
-              description: 'Plain-text reason relating fabric behaviour to the silhouette.',
+              description: 'Plain-text reason connecting the choice to the lesson criteria.',
             },
           },
           required: ['answer_id', 'reason'],
@@ -176,4 +176,3 @@
   window.UnikonWebMCPTools = { TOOL_NAMES, definitions, init, validateEmpty, validateStagedAnswer };
   init().catch(() => {});
 }());
-

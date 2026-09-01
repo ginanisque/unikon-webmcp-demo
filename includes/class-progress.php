@@ -21,8 +21,8 @@ final class Progress {
 	}
 
 	/** @return array<string,mixed> */
-	public function get( $user_id ) {
-		$stored = get_user_meta( (int) $user_id, self::META_KEY, true );
+	public function get( $user_id, $course_id = Content::COURSE_ID ) {
+		$stored = get_user_meta( (int) $user_id, $this->meta_key( $course_id ), true );
 		if ( ! is_array( $stored ) ) {
 			return $this->defaults();
 		}
@@ -32,18 +32,18 @@ final class Progress {
 	}
 
 	/** @return array<string,mixed> */
-	public function open_lesson( $user_id ) {
-		$state = $this->get( $user_id );
+	public function open_lesson( $user_id, $course_id = Content::COURSE_ID ) {
+		$state = $this->get( $user_id, $course_id );
 		if ( 'not_started' === $state['lesson_status'] ) {
 			$state['lesson_status'] = 'in_progress';
-			$this->save( $user_id, $state );
+			$this->save( $user_id, $state, $course_id );
 		}
 		return $state;
 	}
 
 	/** @return array<string,mixed>|\WP_Error */
-	public function start_exercise( $user_id ) {
-		$state = $this->get( $user_id );
+	public function start_exercise( $user_id, $course_id = Content::COURSE_ID ) {
+		$state = $this->get( $user_id, $course_id );
 		if ( 'not_started' === $state['lesson_status'] ) {
 			return new \WP_Error( 'invalid_state', __( 'Open the lesson before starting its exercise.', 'unikon-webmcp-demo' ), array( 'status' => 409 ) );
 		}
@@ -51,19 +51,19 @@ final class Progress {
 		if ( 'not_started' === $state['exercise_status'] ) {
 			$state['lesson_status']   = 'completed';
 			$state['exercise_status'] = 'in_progress';
-			$this->save( $user_id, $state );
+			$this->save( $user_id, $state, $course_id );
 		}
 		return $state;
 	}
 
 	/** @return array<string,mixed>|\WP_Error */
-	public function submit( $user_id, $answer_id, $reason ) {
-		$state = $this->get( $user_id );
+	public function submit( $user_id, $answer_id, $reason, $course_id = Content::COURSE_ID ) {
+		$state = $this->get( $user_id, $course_id );
 		if ( 'in_progress' !== $state['exercise_status'] ) {
 			return new \WP_Error( 'invalid_state', __( 'Start the exercise before submitting an answer.', 'unikon-webmcp-demo' ), array( 'status' => 409 ) );
 		}
 
-		$result                   = Content::evaluate( $answer_id, $reason );
+		$result                   = Content::evaluate( $answer_id, $reason, $course_id );
 		$state['attempt_count']   = (int) $state['attempt_count'] + 1;
 		$state['selected_answer'] = $answer_id;
 		$state['feedback_code']   = $result['feedback_code'];
@@ -71,7 +71,7 @@ final class Progress {
 			$state['exercise_status'] = 'completed';
 			$state['lesson_status']   = 'completed';
 		}
-		$this->save( $user_id, $state );
+		$this->save( $user_id, $state, $course_id );
 
 		return array(
 			'state'      => $state,
@@ -86,10 +86,10 @@ final class Progress {
 			$next    = array( 'action' => 'complete', 'label' => __( 'Course complete—review what you learned.', 'unikon-webmcp-demo' ) );
 		} elseif ( 'in_progress' === $state['exercise_status'] ) {
 			$percent = 70;
-			$next    = array( 'action' => 'submit_answer', 'label' => __( 'Complete the fabric choice exercise.', 'unikon-webmcp-demo' ) );
+			$next    = array( 'action' => 'submit_answer', 'label' => __( 'Complete the current exercise.', 'unikon-webmcp-demo' ) );
 		} elseif ( 'not_started' !== $state['lesson_status'] ) {
 			$percent = 35;
-			$next    = array( 'action' => 'start_exercise', 'label' => __( 'Start the fabric choice exercise.', 'unikon-webmcp-demo' ) );
+			$next    = array( 'action' => 'start_exercise', 'label' => __( 'Start the current course exercise.', 'unikon-webmcp-demo' ) );
 		} else {
 			$percent = 0;
 			$next    = array( 'action' => 'open_lesson', 'label' => __( 'Open your first lesson.', 'unikon-webmcp-demo' ) );
@@ -105,9 +105,13 @@ final class Progress {
 		);
 	}
 
-	private function save( $user_id, &$state ) {
+	private function save( $user_id, &$state, $course_id ) {
 		$state['updated_at'] = gmdate( 'c' );
-		update_user_meta( (int) $user_id, self::META_KEY, $this->normalize( $state ) );
+		update_user_meta( (int) $user_id, $this->meta_key( $course_id ), $this->normalize( $state ) );
+	}
+
+	private function meta_key( $course_id ) {
+		return Content::COURSE_ID === $course_id ? self::META_KEY : self::META_KEY . '_' . sanitize_key( $course_id );
 	}
 
 	/** @return array<string,mixed> */
@@ -127,4 +131,3 @@ final class Progress {
 		);
 	}
 }
-
