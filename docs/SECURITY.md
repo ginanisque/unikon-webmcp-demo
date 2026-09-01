@@ -6,6 +6,8 @@ The WordPress server is authoritative for identity, state transitions, attempts,
 
 Tools are registered only on the signed-in learning page, use same-origin defaults, and do not set `exposedTo`. Deployment must preserve origin isolation and the default `tools` Permissions Policy. Cross-origin frames should not receive tool access.
 
+Vimeo configuration accepts URLs only from `vimeo.com`, `www.vimeo.com`, and `player.vimeo.com`, extracts the numeric video identifier and optional private hash, and constructs the iframe itself. Raw embed HTML and scripts are never accepted. Vimeo URLs are stored as a private WordPress option and are not returned by WebMCP tools.
+
 ## Human confirmation
 
 `stage_exercise_answer` only fills the visible form. It has no code path to the submission endpoint. Grading and persistence happen only in the form's learner-triggered submit handler. The staged reason is marked as untrusted content and is treated only as plain text.

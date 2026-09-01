@@ -20,4 +20,6 @@ Install the standard WordPress PHPUnit test library and set `WP_TESTS_DIR`, then
 8. Repeat with a second WordPress user and confirm isolated progress.
 9. Repeat signed out, with keyboard navigation, at narrow width, and in a browser without WebMCP.
 
+For Sewing Class, verify that an unconfigured video blocks its response form, all 19 configured Vimeo players use `player.vimeo.com`, and passing one response unlocks only the next topic.
+
 The prompt expectations and ordered journey are recorded in `tests/evals/journeys.json`.

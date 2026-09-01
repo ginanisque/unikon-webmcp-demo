@@ -2,12 +2,13 @@
 
 A standalone WordPress plugin demonstrating a human-first fashion lesson that exposes five structured tools to in-browser agents through the experimental WebMCP API.
 
-Current plugin version: **0.3.0**.
+Current plugin version: **0.4.0**.
 
 ## What the demo includes
 
 - Two compact courses with one lesson and deterministic exercise each
 - A six-layer Fashion Design assessment path with quizzes, applied responses, a final essay, retries, and saved submission history
+- A 19-topic Vimeo-led Sewing Class with sequential practice responses and a final reflection essay
 - WordPress authentication and per-user progress
 - A normal accessible interface that works without WebMCP
 - Five WebMCP tools: learning state, lesson opening, exercise start, answer staging, and progress guidance
@@ -22,7 +23,11 @@ Current plugin version: **0.3.0**.
 
 For a focused presentation, the optional companion theme is in `theme/unikon-webmcp-theme`. Activating it sets the generated learning page as the static homepage once and removes the duplicate outer page title from the front-page layout.
 
-Activation creates the main learning page and a separate Fashion Design Studio course page, then reuses them on later activations. Deactivation preserves progress. Explicit uninstall removes this plugin's user metadata and removes generated pages only when their shortcode content was not edited.
+Activation creates the main learning page, Fashion Design Studio page, and Sewing Video Class page, then reuses them on later activations. Deactivation preserves progress. Explicit uninstall removes this plugin's user metadata and removes generated pages only when their shortcode content was not edited.
+
+### Configure private Vimeo lessons
+
+Open **Settings → Sewing Class Videos** and paste each Vimeo link, or paste the private JSON mapping into the bulk-import field. Links are validated, stored in the WordPress database, and never required in the public Git repository. A video topic cannot be submitted until its Vimeo URL is configured.
 
 ## Try WebMCP
 

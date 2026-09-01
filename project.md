@@ -8,6 +8,8 @@ Approved implementation plan. Codex may begin implementation in small, verified 
 
 Version 0.3 extends the Fashion Design course into six ordered layers: knowledge choices, applied short responses, a mood-board decision, and a final essay. Each learner-confirmed attempt is stored separately, failed work can be retried, and a passed layer unlocks the next. WebMCP remains limited to staging visible responses for explicit learner submission.
 
+Version 0.4 adds a third course with 19 sequential Vimeo-led sewing topics. Video identifiers remain outside the public repository and are configured through a protected WordPress settings screen. Each configured video leads to a learner-confirmed practice response; the final layer is a reflective essay.
+
 ## Project goal
 
 Build a standalone, open-source WordPress plugin that demonstrates an agent-assisted fashion eSchool using the experimental WebMCP browser API. The demo will include one original course, one lesson, one structured exercise, WordPress-authenticated learner progress, and five focused WebMCP tools.

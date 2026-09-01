@@ -7,6 +7,7 @@ defined( 'ABSPATH' ) || exit;
 final class Content {
 	const COURSE_ID   = 'fashion-foundations';
 	const DESIGN_COURSE_ID = 'fashion-design-studio';
+	const SEWING_COURSE_ID = 'sewing-video-class';
 	const LESSON_ID   = 'first-a-line-skirt';
 	const EXERCISE_ID = 'fabric-choice';
 
@@ -75,12 +76,41 @@ final class Content {
 					'max_reason_length' => 280,
 				),
 			),
+			self::SEWING_COURSE_ID => array(
+				'id'          => self::SEWING_COURSE_ID,
+				'title'       => __( 'Sewing Skills: Machine Control to Finishing', 'unikon-webmcp-demo' ),
+				'description' => __( 'A guided Vimeo learning path through essential machine handling, stitching, closures, shaping, and finishing techniques.', 'unikon-webmcp-demo' ),
+				'lesson'      => array(
+					'id'        => 'sewing-video-path',
+					'title'     => __( 'How to Use the Sewing Video Path', 'unikon-webmcp-demo' ),
+					'objective' => __( 'Practise one technique at a time, explain the key control point, and unlock the next topic.', 'unikon-webmcp-demo' ),
+					'body'      => array(
+						__( 'Watch each demonstration with your machine switched off when handling the needle area. Pause frequently and reproduce each setup before sewing.', 'unikon-webmcp-demo' ),
+						__( 'After every video, submit a short observation about the technique. A response that identifies the important control point unlocks the next topic.', 'unikon-webmcp-demo' ),
+						__( 'Video completion is learner-confirmed through the assessment; WebMCP can navigate and stage responses but cannot claim that a video was watched.', 'unikon-webmcp-demo' ),
+					),
+				),
+				'exercise'    => array(
+					'id' => 'sewing-topic-checks', 'title' => __( 'Sewing practice journal', 'unikon-webmcp-demo' ),
+					'prompt' => __( 'Work through the video topics in order and record the key technique from each.', 'unikon-webmcp-demo' ),
+					'choices' => array(), 'max_reason_length' => 600,
+				),
+			),
 		);
 	}
 
 	/** Return ordered assessments for a course. @return array<int,array<string,mixed>> */
 	public static function assessments( $course_id ) {
 		$course = self::course( $course_id );
+		if ( self::SEWING_COURSE_ID === $course_id ) {
+			return array_map( static function ( $topic ) {
+				return array(
+					'id' => $topic['id'], 'type' => $topic['type'], 'title' => $topic['title'], 'prompt' => $topic['prompt'],
+					'choices' => array(), 'min_length' => $topic['min_length'], 'max_length' => $topic['max_length'],
+					'correct' => null, 'keywords' => $topic['keywords'], 'video_topic' => true,
+				);
+			}, self::video_topics() );
+		}
 		if ( self::DESIGN_COURSE_ID !== $course_id ) {
 			return array(
 				array(
@@ -128,6 +158,42 @@ final class Content {
 				'keywords' => array( 'inspiration', 'silhouette', 'shape', 'colour', 'color', 'palette', 'material', 'fabric', 'excluded', 'removed', 'coherent', 'collection' ),
 			),
 		);
+	}
+
+	/** Public-safe topic structure; Vimeo URLs are stored privately in WordPress options. */
+	public static function video_topics() {
+		$topics = array(
+			array( 'threading-machine', 'Threading the Sewing Machine', array( 'thread', 'guide', 'tension', 'needle', 'presser' ) ),
+			array( 'machine-tension', 'Machine Tension', array( 'tension', 'balanced', 'stitch', 'upper', 'bobbin' ) ),
+			array( 'guide-fabric', 'Guiding the Fabric', array( 'guide', 'fabric', 'feed', 'hands', 'pull', 'control' ) ),
+			array( 'practice-preparation', 'Prepare for Practice', array( 'practice', 'needle', 'machine', 'safety', 'scrap', 'setup' ) ),
+			array( 'straight-lines', 'Straight Lines', array( 'straight', 'seam', 'guide', 'allowance', 'line', 'speed' ) ),
+			array( 'curved-lines', 'Curved Lines', array( 'curve', 'pivot', 'guide', 'slow', 'line', 'needle' ) ),
+			array( 'angled-lines', 'Angled Lines', array( 'angle', 'corner', 'pivot', 'needle', 'line', 'turn' ) ),
+			array( 'science-repetition', 'Skill Building Through Repetition', array( 'repeat', 'practice', 'control', 'accuracy', 'muscle', 'consistent' ) ),
+			array( 'basic-zipper', 'Basic Zipper', array( 'zipper', 'foot', 'teeth', 'baste', 'seam', 'stitch' ) ),
+			array( 'invisible-zipper', 'Invisible Zipper', array( 'invisible', 'coil', 'foot', 'press', 'teeth', 'seam' ) ),
+			array( 'decorative-zipper', 'Decorative Zipper', array( 'decorative', 'zipper', 'topstitch', 'placement', 'visible', 'edge' ) ),
+			array( 'front-fly-zipper', 'Front-Fly Zipper', array( 'fly', 'zipper', 'shield', 'extension', 'topstitch', 'front' ) ),
+			array( 'topstitch-understitch', 'Topstitching and Understitching', array( 'topstitch', 'understitch', 'edge', 'facing', 'seam', 'visible' ) ),
+			array( 'reinforce-stitching', 'Reinforcement Stitching', array( 'reinforce', 'backstitch', 'stress', 'secure', 'stitch', 'strength' ) ),
+			array( 'ease-gathers', 'Ease and Gathers', array( 'ease', 'gather', 'stitch', 'distribute', 'fullness', 'thread' ) ),
+			array( 'sew-darts', 'Sewing Darts', array( 'dart', 'point', 'taper', 'press', 'shape', 'stitch' ) ),
+			array( 'sew-corners', 'Sewing Corners', array( 'corner', 'pivot', 'trim', 'turn', 'needle', 'point' ) ),
+			array( 'plackets', 'Plackets', array( 'placket', 'opening', 'reinforce', 'fold', 'edge', 'closure' ) ),
+			array( 'blind-hemming', 'Blind Hemming Reflection', array( 'blind', 'hem', 'fold', 'stitch', 'invisible', 'finish' ) ),
+		);
+		return array_map( static function ( $item, $index ) use ( $topics ) {
+			$is_final = $index === count( $topics ) - 1;
+			return array(
+				'id' => $item[0], 'title' => sprintf( __( 'Video %1$d: %2$s', 'unikon-webmcp-demo' ), $index + 1, $item[1] ),
+				'type' => $is_final ? 'essay' : 'short_answer',
+				'prompt' => $is_final
+					? __( 'After watching, write a final reflection connecting blind hemming to at least two earlier control or finishing techniques in this course.', 'unikon-webmcp-demo' )
+					: __( 'After watching, describe the key control point demonstrated and one detail you would check during practice.', 'unikon-webmcp-demo' ),
+				'min_length' => $is_final ? 140 : 40, 'max_length' => $is_final ? 1200 : 500, 'keywords' => $item[2],
+			);
+		}, $topics, array_keys( $topics ) );
 	}
 
 	/** Evaluate one assessment with a deterministic minimum-evidence rubric. */

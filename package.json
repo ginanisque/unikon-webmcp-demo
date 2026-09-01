@@ -1,7 +1,7 @@
 {
   "name": "unikon-webmcp-demo-tests",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.4.0",
   "scripts": {
     "test": "node --test tests/js/*.test.js",
     "check": "node --check public/js/learning-app.js && node --check public/js/webmcp-tools.js"

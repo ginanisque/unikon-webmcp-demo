@@ -10,6 +10,12 @@
   ];
 
   const emptySchema = { type: 'object', properties: {}, additionalProperties: false };
+  const ACTIVITY_IDS = [
+    'fabric-choice', 'design-signal', 'colour-story', 'silhouette-analysis', 'material-direction', 'moodboard-edit', 'collection-rationale',
+    'threading-machine', 'machine-tension', 'guide-fabric', 'practice-preparation', 'straight-lines', 'curved-lines', 'angled-lines',
+    'science-repetition', 'basic-zipper', 'invisible-zipper', 'decorative-zipper', 'front-fly-zipper', 'topstitch-understitch',
+    'reinforce-stitching', 'ease-gathers', 'sew-darts', 'sew-corners', 'plackets', 'blind-hemming',
+  ];
 
   function mcpResult(data, message) {
     return {
@@ -39,8 +45,7 @@
     if (!input || typeof input !== 'object' || Array.isArray(input) || Object.keys(input).some((key) => !allowed.includes(key))) {
       throw Object.assign(new Error('Use only activity_id, answer_id, and reason.'), { code: 'invalid_parameters' });
     }
-    const activities = ['fabric-choice', 'design-signal', 'colour-story', 'silhouette-analysis', 'material-direction', 'moodboard-edit', 'collection-rationale'];
-    if (!activities.includes(input.activity_id)) {
+    if (!ACTIVITY_IDS.includes(input.activity_id)) {
       throw Object.assign(new Error('Choose the current unlocked activity_id.'), { code: 'invalid_parameters' });
     }
     if (input.answer_id !== undefined && typeof input.answer_id !== 'string') {
@@ -105,7 +110,7 @@
           properties: {
             activity_id: {
               type: 'string',
-              enum: ['fabric-choice', 'design-signal', 'colour-story', 'silhouette-analysis', 'material-direction', 'moodboard-edit', 'collection-rationale'],
+              enum: ACTIVITY_IDS,
               description: 'Identifier of the current unlocked assessment layer.',
             },
             answer_id: {
@@ -186,6 +191,6 @@
     return { supported: true, registered, controller, cleanup };
   }
 
-  window.UnikonWebMCPTools = { TOOL_NAMES, definitions, init, validateEmpty, validateStagedAnswer };
+  window.UnikonWebMCPTools = { TOOL_NAMES, ACTIVITY_IDS, definitions, init, validateEmpty, validateStagedAnswer };
   init().catch(() => {});
 }());

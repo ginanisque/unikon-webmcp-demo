@@ -81,13 +81,23 @@ defined( 'ABSPATH' ) || exit;
 				<?php foreach ( $assessments as $assessment ) :
 					$status = $state['activity_statuses'][ $assessment['id'] ] ?? 'locked';
 					$field_id = 'uwmcp-response-' . $assessment['id'];
+					$is_video = ! empty( $assessment['video_topic'] );
+					$embed_url = $is_video && isset( $video_urls[ $assessment['id'] ] ) ? \Ginani\UnikonWebMCPDemo\Video_Settings::embed_url( $video_urls[ $assessment['id'] ] ) : '';
+					$video_ready = ! $is_video || (bool) $embed_url;
 				?>
 					<article class="uwmcp-assessment" data-assessment="<?php echo esc_attr( $assessment['id'] ); ?>" data-status="<?php echo esc_attr( $status ); ?>" <?php echo 'locked' === $status ? 'hidden' : ''; ?>>
 						<p class="uwmcp-kicker"><?php echo esc_html( str_replace( '_', ' ', $assessment['type'] ) ); ?></p>
 						<h3><?php echo esc_html( $assessment['title'] ); ?></h3>
+						<?php if ( $is_video ) : ?>
+							<?php if ( $embed_url ) : ?>
+								<div class="uwmcp-video"><iframe src="<?php echo esc_url( $embed_url ); ?>" title="<?php echo esc_attr( $assessment['title'] ); ?>" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+							<?php else : ?>
+								<p class="uwmcp-video-missing"><?php esc_html_e( 'The course administrator has not configured this Vimeo lesson yet.', 'unikon-webmcp-demo' ); ?></p>
+							<?php endif; ?>
+						<?php endif; ?>
 						<p><?php echo esc_html( $assessment['prompt'] ); ?></p>
 						<?php if ( 'completed' === $status ) : ?><p class="uwmcp-complete-label"><?php esc_html_e( 'Passed', 'unikon-webmcp-demo' ); ?></p><?php endif; ?>
-						<form data-exercise-form data-activity-id="<?php echo esc_attr( $assessment['id'] ); ?>" <?php echo 'completed' === $status ? 'hidden' : ''; ?>>
+						<form <?php echo $video_ready ? 'data-exercise-form' : ''; ?> data-activity-id="<?php echo esc_attr( $assessment['id'] ); ?>" <?php echo 'completed' === $status || ! $video_ready ? 'hidden' : ''; ?>>
 							<?php if ( $assessment['choices'] ) : ?>
 							<fieldset><legend><?php esc_html_e( 'Choose one answer', 'unikon-webmcp-demo' ); ?></legend>
 							<?php foreach ( $assessment['choices'] as $value => $label ) : ?>

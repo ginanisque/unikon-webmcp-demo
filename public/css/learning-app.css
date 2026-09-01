@@ -50,6 +50,9 @@
 .uwmcp-assessment { padding: clamp(1.25rem, 4vw, 2rem); border: 1px solid var(--uwmcp-line); border-radius: 18px; background: var(--uwmcp-surface); }
 .uwmcp-assessment h3 { margin: .35rem 0 .8rem; color: var(--uwmcp-brand); font-size: 1.35rem; }
 .uwmcp-complete-label { display: inline-flex; padding: .3rem .65rem; border-radius: 999px; background: #ecfdf3; color: #067647; font-weight: 800; }
+.uwmcp-video { position: relative; overflow: hidden; aspect-ratio: 16 / 9; margin: 1rem 0; border-radius: 14px; background: #101828; }
+.uwmcp-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.uwmcp-video-missing { padding: 1rem; border: 1px dashed #98a2b3; border-radius: 12px; color: var(--uwmcp-muted); }
 .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 [hidden] { display: none !important; }
 @media (max-width: 700px) {

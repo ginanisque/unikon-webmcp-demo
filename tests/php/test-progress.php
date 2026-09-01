@@ -64,4 +64,16 @@ final class Unikon_WebMCP_Progress_Test extends WP_UnitTestCase {
 		$this->assertSame( 'in_progress', $this->progress->get( $user, Ginani\UnikonWebMCPDemo\Content::DESIGN_COURSE_ID )['activity_statuses']['colour-story'] );
 		$this->assertSame( 'not_started', $this->progress->get( $user )['lesson_status'] );
 	}
+
+	public function test_sewing_topic_unlocks_only_the_next_video() {
+		$user = self::factory()->user->create();
+		$course = Ginani\UnikonWebMCPDemo\Content::SEWING_COURSE_ID;
+		$this->progress->open_lesson( $user, $course );
+		$this->progress->start_exercise( $user, $course );
+		$result = $this->progress->submit( $user, 'threading-machine', '', 'Thread through each guide and check the needle and tension path before sewing.', $course );
+		$this->assertTrue( $result['evaluation']['passed'] );
+		$this->assertSame( 'completed', $result['state']['activity_statuses']['threading-machine'] );
+		$this->assertSame( 'in_progress', $result['state']['activity_statuses']['machine-tension'] );
+		$this->assertArrayNotHasKey( 'guide-fabric', $result['state']['activity_statuses'] );
+	}
 }
