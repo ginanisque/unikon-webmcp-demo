@@ -4,7 +4,7 @@ A human-first WordPress fashion eSchool where browser agents can navigate learni
 
 [Live demo](https://webmcp.ginani.net/) · [Devpost submission draft](SUBMISSION.md) · [Security model](docs/SECURITY.md) · [Code audit](docs/CODE-AUDIT.md)
 
-Current plugin version: **0.6.1**.
+Current plugin version: **0.6.2**.
 
 ## What the demo includes
 
