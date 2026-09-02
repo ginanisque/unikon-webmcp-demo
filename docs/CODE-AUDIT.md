@@ -26,9 +26,9 @@ Remaining action: verify the resulting public commit and test a clean clone befo
 
 ### Resolved — Course-image ownership confirmed
 
-Six images were selected only from course-level Moodle media; learner submissions, profile images, feedback, and grading files were excluded. However, the Moodle manifests label some selected media `allrightsreserved` and others `unknown`. At least one design visual contains metadata identifying AI-assisted generation.
+Six course images were selected only from course-level Moodle media; learner submissions, profile images, feedback, and grading files were excluded. The project-owner homepage hero was added separately. The Moodle manifests label some course media `allrightsreserved` and others `unknown`, and some visual metadata identifies AI-assisted generation.
 
-The project owner has confirmed ownership and authorized publication of the six bundled images as part of this project. The ownership declaration is recorded in `docs/COURSE-MEDIA.md`. The plugin's GPL license does not apply to those images.
+The project owner has confirmed ownership and authorized publication of the bundled images as part of this project. The ownership declaration is recorded in `docs/COURSE-MEDIA.md`. The plugin's GPL license does not apply to those images.
 
 Status: resolved for hackathon publication. Accurate provenance documentation remains included.
 

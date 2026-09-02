@@ -30,12 +30,19 @@ add_action( 'after_switch_theme', 'unikon_webmcp_theme_schedule_front_page' );
 
 /** Set the known demo page as the static homepage without creating content. */
 function unikon_webmcp_theme_focus_front_page() {
-	if ( ! get_option( 'unikon_webmcp_theme_needs_front_page' ) || ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
 
-	$page = get_page_by_path( 'fashion-learning-studio', OBJECT, 'page' );
+	$page = get_page_by_path( 'fashion-learning-studio-home', OBJECT, 'page' );
 	if ( ! $page instanceof WP_Post || 'publish' !== $page->post_status ) {
+		return;
+	}
+	$previous_page = get_page_by_path( 'fashion-learning-studio', OBJECT, 'page' );
+	$front_page_id = (int) get_option( 'page_on_front' );
+	$needs_focus = (bool) get_option( 'unikon_webmcp_theme_needs_front_page' );
+	$is_previous_demo_home = $previous_page instanceof WP_Post && $front_page_id === (int) $previous_page->ID;
+	if ( ! $needs_focus && ! $is_previous_demo_home ) {
 		return;
 	}
 
@@ -57,4 +64,3 @@ function unikon_webmcp_theme_admin_notice() {
 	<?php
 }
 add_action( 'admin_notices', 'unikon_webmcp_theme_admin_notice' );
-

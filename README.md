@@ -4,7 +4,7 @@ A human-first WordPress fashion eSchool where browser agents can navigate learni
 
 [Live demo](https://webmcp.ginani.net/) · [Devpost submission draft](SUBMISSION.md) · [Security model](docs/SECURITY.md) · [Code audit](docs/CODE-AUDIT.md)
 
-Current plugin version: **0.5.0**.
+Current plugin version: **0.6.0**.
 
 ## What the demo includes
 
@@ -39,7 +39,7 @@ Requirements: WordPress 6.4+, PHP 7.4+, HTTPS, and a WebMCP-capable browser for 
 
 For a focused presentation, the optional companion theme is in `theme/unikon-webmcp-theme`. Activating it sets the generated learning page as the static homepage once and removes the duplicate outer page title from the front-page layout.
 
-Activation creates the main learning page, Fashion Design Studio page, and Sewing Video Class page, then reuses them on later activations. Deactivation preserves progress. Explicit uninstall removes this plugin's user metadata and removes generated pages only when their shortcode content was not edited.
+Activation creates a public home page plus the Fashion Foundations, Fashion Design Studio, and Sewing Video Class pages, then reuses them on later activations. The home page leads visitors to WordPress login before opening the demo. Deactivation preserves progress. Explicit uninstall removes this plugin's user metadata and removes generated pages only when their shortcode content was not edited.
 
 ### Configure private Vimeo lessons
 

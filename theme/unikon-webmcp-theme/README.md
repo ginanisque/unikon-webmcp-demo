@@ -2,11 +2,11 @@
 
 A minimal companion block theme for the Unikon WebMCP Fashion eSchool Demo plugin.
 
-Version 0.2.0 supports the additional course page without adding a duplicate outer title.
+Version 0.3.0 focuses the new public landing page without adding a duplicate outer title.
 
 ## Behaviour
 
-When activated by an administrator, the theme looks for the published page with the slug `fashion-learning-studio` and sets it as the static homepage. If the plugin has not created that page yet, an admin notice appears and the theme retries after the plugin is activated. Once configured, it does not repeatedly override later Reading Settings changes.
+When activated by an administrator, the theme looks for the published page with the slug `fashion-learning-studio-home` and sets it as the static homepage. If the plugin has not created that page yet, an admin notice appears and the theme retries after the plugin is activated. Version 0.3.0 also migrates installations whose homepage is still the former `fashion-learning-studio` course page. Once configured, it does not repeatedly override later Reading Settings changes.
 
 The front-page template intentionally omits the standard post title because the learning interface supplies its own primary heading. Other pages retain normal titles and content.
 

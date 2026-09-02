@@ -6,7 +6,7 @@ The bundled course visuals were extracted from Moodle course backup media suppli
 
 Copyright © 2026 Ginani. All rights reserved.
 
-Ginani confirms ownership of the bundled course images and authorizes their publication as part of the Fashion Learning Studio hackathon project and its public repository. This declaration applies to the six files listed below.
+Ginani confirms ownership of the bundled course images and homepage hero and authorizes their publication as part of the Fashion Learning Studio hackathon project and its public repository. This declaration applies to the files listed below.
 
 The images are not licensed under the plugin's GPL-2.0-or-later software license. No permission is granted to extract, resell, or reuse them independently of this project.
 
@@ -16,6 +16,7 @@ Only course overview, section, label, or resource media was considered. Student 
 
 | Demo course | File | Moodle source role |
 | --- | --- | --- |
+| Public homepage | `assets/fashion-elearning-unikon.png` | Project-owner hero artwork |
 | Fashion Foundations | `fashion-foundations-colour-wheel.png` | Fashion colour wheel learning resource |
 | Fashion Design Studio | `fashion-design-studio.jpg` | Course overview image |
 | Fashion Design Studio | `fashion-design-consultation.jpg` | Course introduction image |

@@ -30,7 +30,7 @@ I wanted to explore a more trustworthy collaboration: an agent that understands 
 
 ## What it does
 
-The demo contains three focused learning paths:
+The public hero homepage introduces the human-agent collaboration and sends judges through WordPress login into three focused learning paths:
 
 - **Fashion Foundations: Fabric to Silhouette** introduces fabric behaviour and an A-line skirt exercise.
 - **Fashion Design Studio: Concept to Collection** uses six ordered layers spanning design signals, colour, silhouette, materials, mood-board editing, and a final rationale.

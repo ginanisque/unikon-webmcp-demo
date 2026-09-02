@@ -15,6 +15,13 @@ if ( $page_id ) {
 }
 delete_option( 'unikon_webmcp_demo_page_id' );
 
+$home_page_id = (int) get_option( 'unikon_webmcp_demo_home_page_id' );
+if ( $home_page_id ) {
+	$home_page = get_post( $home_page_id );
+	if ( $home_page instanceof WP_Post && '[unikon_webmcp_home]' === trim( $home_page->post_content ) ) wp_delete_post( $home_page_id, true );
+}
+delete_option( 'unikon_webmcp_demo_home_page_id' );
+
 $design_page_id = (int) get_option( 'unikon_webmcp_demo_design_page_id' );
 if ( $design_page_id ) {
 	$design_page = get_post( $design_page_id );

@@ -12,6 +12,31 @@
   font-family: Inter, system-ui, sans-serif;
   line-height: 1.6;
 }
+.uwmcp-home { --uwmcp-home-ink: #101828; --uwmcp-home-brand: #0b2a5b; --uwmcp-home-accent: #e3bd3f; width: min(1180px, calc(100% - 2rem)); margin: 2rem auto 5rem; color: var(--uwmcp-home-ink); font-family: Inter, system-ui, sans-serif; }
+.uwmcp-home *, .uwmcp-home *::before, .uwmcp-home *::after { box-sizing: border-box; }
+.uwmcp-home-hero { position: relative; isolation: isolate; overflow: hidden; min-height: min(720px, 76vh); border-radius: 30px; background: #061a2c; box-shadow: 0 30px 80px rgba(6,26,44,.2); }
+.uwmcp-home-hero-image, .uwmcp-home-hero-shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+.uwmcp-home-hero-image { z-index: -2; object-fit: cover; object-position: center; }
+.uwmcp-home-hero-shade { z-index: -1; background: linear-gradient(90deg, rgba(4,20,35,.96) 0%, rgba(4,20,35,.84) 38%, rgba(4,20,35,.18) 70%, rgba(4,20,35,.06) 100%); }
+.uwmcp-home-hero-content { display: flex; flex-direction: column; justify-content: center; width: min(660px, 64%); min-height: inherit; padding: clamp(2rem, 7vw, 6rem); color: #fff; }
+.uwmcp-home .uwmcp-eyebrow { color: var(--uwmcp-home-accent); }
+.uwmcp-home h1, .uwmcp-home h2, .uwmcp-home h3 { font-family: "Plus Jakarta Sans", Inter, system-ui, sans-serif; line-height: 1.08; }
+.uwmcp-home h1 { margin: .75rem 0 1.25rem; color: #fff; font-size: clamp(2.7rem, 6.5vw, 5.5rem); letter-spacing: -.055em; }
+.uwmcp-home-hero-content > p:not(.uwmcp-eyebrow) { max-width: 590px; color: rgba(255,255,255,.82); font-size: clamp(1rem, 1.5vw, 1.2rem); line-height: 1.7; }
+.uwmcp-home-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.4rem; margin-top: 1.5rem; }
+.uwmcp-home-button { display: inline-flex; padding: .85rem 1.35rem; border-radius: 999px; background: var(--uwmcp-home-accent); color: #061a2c !important; font-weight: 800; text-decoration: none; }
+.uwmcp-home-text-link { color: #fff !important; font-weight: 750; text-underline-offset: .3em; }
+.uwmcp-home-intro { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1fr); gap: 2rem; align-items: end; padding: clamp(3rem, 7vw, 6rem) clamp(.25rem, 2vw, 2rem) 2rem; }
+.uwmcp-home h2 { margin: .4rem 0 0; color: var(--uwmcp-home-brand); font-size: clamp(2rem, 4vw, 3.6rem); letter-spacing: -.04em; }
+.uwmcp-home-intro > p { margin: 0; color: #475467; font-size: 1.08rem; line-height: 1.75; }
+.uwmcp-home-courses { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.uwmcp-home-courses article { display: flex; flex-direction: column; min-height: 310px; padding: clamp(1.5rem, 3vw, 2.25rem); border: 1px solid #e5e7eb; border-radius: 22px; background: #fff; }
+.uwmcp-home-course-number { margin: 0; color: #b08916; font-weight: 850; letter-spacing: .12em; }
+.uwmcp-home-courses h3 { margin: 1rem 0 .75rem; color: var(--uwmcp-home-brand); font-size: 1.45rem; }
+.uwmcp-home-courses article > p:not(.uwmcp-home-course-number) { color: #475467; }
+.uwmcp-home-courses a { margin-top: auto; color: var(--uwmcp-home-brand); font-weight: 800; }
+.uwmcp-home-boundary { margin-top: clamp(3rem, 7vw, 6rem); padding: clamp(2rem, 6vw, 4.5rem); border-radius: 26px; background: #f7f3e6; }
+.uwmcp-home-boundary p:last-child { max-width: 760px; color: #475467; font-size: 1.08rem; }
 .uwmcp-app *, .uwmcp-app *::before, .uwmcp-app *::after { box-sizing: inherit; }
 .uwmcp-app h1, .uwmcp-app h2 { color: var(--uwmcp-brand); font-family: "Plus Jakarta Sans", Inter, system-ui, sans-serif; line-height: 1.12; }
 .uwmcp-app h1 { max-width: 760px; margin: .35rem 0 1rem; font-size: clamp(2.25rem, 7vw, 4.8rem); letter-spacing: -.045em; }
@@ -63,7 +88,13 @@
 .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 [hidden] { display: none !important; }
 @media (max-width: 700px) {
-  .uwmcp-progress { grid-template-columns: 1fr; gap: .75rem; }
+	.uwmcp-home-hero { min-height: 680px; }
+	.uwmcp-home-hero-image { object-position: 64% center; }
+	.uwmcp-home-hero-shade { background: linear-gradient(0deg, rgba(4,20,35,.98) 0%, rgba(4,20,35,.84) 54%, rgba(4,20,35,.12) 100%); }
+	.uwmcp-home-hero-content { justify-content: flex-end; width: 100%; padding: 2rem; }
+	.uwmcp-home h1 { font-size: clamp(2.45rem, 12vw, 3.7rem); }
+	.uwmcp-home-intro, .uwmcp-home-courses { grid-template-columns: 1fr; }
+	.uwmcp-progress { grid-template-columns: 1fr; gap: .75rem; }
   .uwmcp-card { grid-template-columns: 1fr; }
   .uwmcp-button { width: 100%; }
   .uwmcp-button-secondary { margin: .65rem 0 0; }
