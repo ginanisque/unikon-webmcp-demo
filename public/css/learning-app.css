@@ -21,7 +21,7 @@
 .uwmcp-home-hero-content { display: flex; flex-direction: column; justify-content: center; width: min(660px, 64%); min-height: inherit; padding: clamp(2rem, 7vw, 6rem); color: #fff; }
 .uwmcp-home .uwmcp-eyebrow { color: var(--uwmcp-home-accent); }
 .uwmcp-home h1, .uwmcp-home h2, .uwmcp-home h3 { font-family: "Plus Jakarta Sans", Inter, system-ui, sans-serif; line-height: 1.08; }
-.uwmcp-home h1 { margin: .75rem 0 1.25rem; color: #fff; font-size: clamp(2.7rem, 6.5vw, 5.5rem); letter-spacing: -.055em; }
+.uwmcp-home h1 { margin: .75rem 0 1.25rem; max-width: 610px; color: #fff; font-size: clamp(2.4rem, 4.8vw, 4.35rem); letter-spacing: -.045em; }
 .uwmcp-home-hero-content > p:not(.uwmcp-eyebrow) { max-width: 590px; color: rgba(255,255,255,.82); font-size: clamp(1rem, 1.5vw, 1.2rem); line-height: 1.7; }
 .uwmcp-home-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.4rem; margin-top: 1.5rem; }
 .uwmcp-home-button { display: inline-flex; padding: .85rem 1.35rem; border-radius: 999px; background: var(--uwmcp-home-accent); color: #061a2c !important; font-weight: 800; text-decoration: none; }
@@ -92,7 +92,7 @@
 	.uwmcp-home-hero-image { object-position: 64% center; }
 	.uwmcp-home-hero-shade { background: linear-gradient(0deg, rgba(4,20,35,.98) 0%, rgba(4,20,35,.84) 54%, rgba(4,20,35,.12) 100%); }
 	.uwmcp-home-hero-content { justify-content: flex-end; width: 100%; padding: 2rem; }
-	.uwmcp-home h1 { font-size: clamp(2.45rem, 12vw, 3.7rem); }
+	.uwmcp-home h1 { font-size: clamp(2.25rem, 10vw, 3.25rem); }
 	.uwmcp-home-intro, .uwmcp-home-courses { grid-template-columns: 1fr; }
 	.uwmcp-progress { grid-template-columns: 1fr; gap: .75rem; }
   .uwmcp-card { grid-template-columns: 1fr; }

@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
 		<div class="uwmcp-home-hero-shade" aria-hidden="true"></div>
 		<div class="uwmcp-home-hero-content">
 			<p class="uwmcp-eyebrow"><?php esc_html_e( 'Fashion Learning Studio', 'unikon-webmcp-demo' ); ?></p>
-			<h1 id="uwmcp-home-title"><?php esc_html_e( 'Learn fashion with an agent—and keep the final say.', 'unikon-webmcp-demo' ); ?></h1>
+			<h1 id="uwmcp-home-title"><?php esc_html_e( 'Learn fashion with an agent. Keep the final say.', 'unikon-webmcp-demo' ); ?></h1>
 			<p><?php esc_html_e( 'Explore fashion design and practical sewing through structured lessons, guided exercises, and five browser-native WebMCP tools.', 'unikon-webmcp-demo' ); ?></p>
 			<div class="uwmcp-home-actions">
 				<a class="uwmcp-home-button" href="<?php echo esc_url( $demo_url ); ?>"><?php echo is_user_logged_in() ? esc_html__( 'Enter the learning studio', 'unikon-webmcp-demo' ) : esc_html__( 'Log in to try the demo', 'unikon-webmcp-demo' ); ?></a>
