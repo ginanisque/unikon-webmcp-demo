@@ -24,13 +24,13 @@ The progress fix, course imagery, version bump, media documentation, and related
 
 Remaining action: verify the resulting public commit and test a clean clone before submission.
 
-### High — Publication rights for course images require confirmation
+### Resolved — Course-image ownership confirmed
 
 Six images were selected only from course-level Moodle media; learner submissions, profile images, feedback, and grading files were excluded. However, the Moodle manifests label some selected media `allrightsreserved` and others `unknown`. At least one design visual contains metadata identifying AI-assisted generation.
 
-The challenge requires the submission to be original, solely owned by the entrant, and non-infringing. The plugin's GPL license does not automatically grant rights to unrelated media.
+The project owner has confirmed ownership and authorized publication of the six bundled images as part of this project. The ownership declaration is recorded in `docs/COURSE-MEDIA.md`. The plugin's GPL license does not apply to those images.
 
-Action: confirm that the entrant owns and may publicly redistribute every image. If that cannot be documented, replace the uncertain images with clearly original/openly licensed assets or remove them before submission. Keep accurate AI provenance metadata or disclosure where applicable.
+Status: resolved for hackathon publication. Accurate provenance documentation remains included.
 
 ### Medium — Judges require a restricted test account
 
@@ -94,5 +94,4 @@ Action: treat dynamic registration as a future enhancement unless it can be thor
 - Actual tool discovery and execution in ChatGPT's in-app browser.
 - PHP syntax and WordPress PHPUnit execution in this environment.
 - SiteGround's cache behavior for authenticated HTML under a real WordPress session.
-- Ownership and redistributability of bundled course images.
 - Public repository completeness until the reviewed commit is pushed and tested from a clean clone.

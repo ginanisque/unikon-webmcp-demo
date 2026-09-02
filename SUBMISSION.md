@@ -157,7 +157,7 @@ Use https://webmcp.ginani.net/ and complete the short Fashion Foundations fabric
 ## Final submission checklist
 
 - [ ] Confirm entrant eligibility and accept the official rules.
-- [ ] Confirm ownership/publication rights for every bundled course image.
+- [x] Confirm ownership/publication rights for every bundled course image; declaration recorded in `docs/COURSE-MEDIA.md`.
 - [ ] Commit the complete 0.5.0 source and assets.
 - [ ] Push to a public GitHub, GitLab, or Bitbucket repository.
 - [ ] Make the GPL license visible at the repository root/About area.

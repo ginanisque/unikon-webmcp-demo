@@ -79,4 +79,4 @@ The plugin stores only a small progress record in the signed-in user's WordPress
 
 The plugin and companion theme source code are licensed under **GPL-2.0-or-later**. See [LICENSE](LICENSE).
 
-Bundled course images are project-owner media and are not relicensed under the GPL. Their provenance and redistribution warning are documented in [docs/COURSE-MEDIA.md](docs/COURSE-MEDIA.md). Confirm publication rights before making the repository public; replace any image whose ownership cannot be established.
+Bundled course images are owned by Ginani and are not relicensed under the GPL. Their ownership declaration, provenance, and reuse terms are documented in [docs/COURSE-MEDIA.md](docs/COURSE-MEDIA.md).
