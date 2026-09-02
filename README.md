@@ -28,6 +28,28 @@ Course interfaces are stateful: some lessons are locked, some exercises are comp
 | `stage_exercise_answer` | Fill an unlocked response for learner review—never submit it |
 | `get_progress_and_next_step` | Return completion and one recommended next action |
 
+### WebMCP registration pattern
+
+The production implementation defines all five tools in [`public/js/webmcp-tools.js`](public/js/webmcp-tools.js), feature-detects the browser API, awaits registration, and cleans registrations up with an `AbortController`. Its browser registration follows this pattern:
+
+```js
+await document.modelContext.registerTool({
+  name: 'get_learning_state',
+  description: 'Read the signed-in learner’s current lesson, exercise state, progress, and allowed next actions.',
+  inputSchema: {
+    type: 'object',
+    properties: {},
+    additionalProperties: false,
+  },
+  annotations: { readOnlyHint: true },
+  async execute(input) {
+    return window.UnikonLearningApp.request('state');
+  },
+});
+```
+
+The actual implementation wraps results in WebMCP structured content, validates every input, reports tool-safe errors, and registers each definition through the detected `document.modelContext` instance.
+
 ## Install
 
 1. Copy the plugin folder to `wp-content/plugins/unikon-webmcp-demo`.
