@@ -68,7 +68,7 @@ final class Plugin {
 		$assessments = Content::assessments( $course_id );
 		$video_urls = Content::SEWING_COURSE_ID === $course_id ? Video_Settings::urls() : array();
 		$state  = is_user_logged_in() ? $this->progress->get( get_current_user_id(), $course_id ) : null;
-		$summary = $state ? $this->progress->summary( $state ) : null;
+		$summary = $state ? $this->progress->summary( $state, $course_id ) : null;
 		$course_links = array();
 		foreach ( array( Content::COURSE_ID => self::PAGE_OPTION, Content::DESIGN_COURSE_ID => self::DESIGN_PAGE_OPTION, Content::SEWING_COURSE_ID => self::SEWING_PAGE_OPTION ) as $id => $option ) {
 			$page_id = (int) get_option( $option );

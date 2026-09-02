@@ -22,6 +22,11 @@ defined( 'ABSPATH' ) || exit;
 				<?php endforeach; ?>
 			</nav>
 		<?php endif; ?>
+		<?php if ( ! empty( $course['hero_image'] ) ) : ?>
+			<figure class="uwmcp-hero-visual">
+				<img src="<?php echo esc_url( UNIKON_WEBMCP_DEMO_URL . $course['hero_image']['src'] ); ?>" alt="<?php echo esc_attr( $course['hero_image']['alt'] ); ?>" fetchpriority="high">
+			</figure>
+		<?php endif; ?>
 		<p class="uwmcp-eyebrow"><?php esc_html_e( 'Agent-assisted fashion learning', 'unikon-webmcp-demo' ); ?></p>
 		<h1><?php echo esc_html( $course['title'] ); ?></h1>
 		<p><?php echo esc_html( $course['description'] ); ?></p>
@@ -64,6 +69,16 @@ defined( 'ABSPATH' ) || exit;
 					<?php foreach ( $course['lesson']['body'] as $paragraph ) : ?>
 						<p><?php echo esc_html( $paragraph ); ?></p>
 					<?php endforeach; ?>
+					<?php if ( ! empty( $course['lesson']['images'] ) ) : ?>
+						<div class="uwmcp-lesson-gallery">
+							<?php foreach ( $course['lesson']['images'] as $image ) : ?>
+								<figure>
+									<img src="<?php echo esc_url( UNIKON_WEBMCP_DEMO_URL . $image['src'] ); ?>" alt="<?php echo esc_attr( $image['alt'] ); ?>" loading="lazy">
+									<?php if ( ! empty( $image['caption'] ) ) : ?><figcaption><?php echo esc_html( $image['caption'] ); ?></figcaption><?php endif; ?>
+								</figure>
+							<?php endforeach; ?>
+						</div>
+					<?php endif; ?>
 				</div>
 				<button class="uwmcp-button" type="button" data-action="open-lesson" <?php echo 'not_started' !== $state['lesson_status'] ? 'hidden' : ''; ?>><?php esc_html_e( 'Open lesson', 'unikon-webmcp-demo' ); ?></button>
 				<button class="uwmcp-button uwmcp-button-secondary" type="button" data-action="start-exercise" <?php echo 'not_started' === $state['lesson_status'] || 'completed' === $state['exercise_status'] ? 'hidden' : ''; ?>><?php esc_html_e( 'Start exercise', 'unikon-webmcp-demo' ); ?></button>

@@ -129,8 +129,9 @@ final class Rest_Controller {
 
 	/** @return \WP_REST_Response */
 	public function get_progress() {
-		$state = $this->progress->get( get_current_user_id(), $this->course_id() );
-		return rest_ensure_response( $this->progress->summary( $state ) );
+		$course_id = $this->course_id();
+		$state = $this->progress->get( get_current_user_id(), $course_id );
+		return rest_ensure_response( $this->progress->summary( $state, $course_id ) );
 	}
 
 	/** @return array<string,mixed> */
@@ -149,7 +150,7 @@ final class Rest_Controller {
 			'assessments'     => $assessments,
 			'submission_count' => count( $state['submissions'] ),
 			'allowed_actions' => $this->allowed_actions( $state ),
-			'progress'        => $this->progress->summary( $state ),
+			'progress'        => $this->progress->summary( $state, $course_id ),
 		);
 	}
 

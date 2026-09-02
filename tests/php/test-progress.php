@@ -75,5 +75,6 @@ final class Unikon_WebMCP_Progress_Test extends WP_UnitTestCase {
 		$this->assertSame( 'completed', $result['state']['activity_statuses']['threading-machine'] );
 		$this->assertSame( 'in_progress', $result['state']['activity_statuses']['machine-tension'] );
 		$this->assertArrayNotHasKey( 'guide-fabric', $result['state']['activity_statuses'] );
+		$this->assertSame( 42, $this->progress->summary( $result['state'], $course )['percent'] );
 	}
 }

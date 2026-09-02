@@ -114,13 +114,13 @@ final class Progress {
 	}
 
 	/** @return array<string,mixed> */
-	public function summary( $state ) {
+	public function summary( $state, $course_id = Content::COURSE_ID ) {
 		if ( 'completed' === $state['exercise_status'] ) {
 			$percent = 100;
 			$next    = array( 'action' => 'complete', 'label' => __( 'Course complete—review what you learned.', 'unikon-webmcp-demo' ) );
 		} elseif ( 'in_progress' === $state['exercise_status'] ) {
 			$completed = count( array_filter( $state['activity_statuses'], static function ( $status ) { return 'completed' === $status; } ) );
-			$total = max( 1, count( $state['activity_statuses'] ) );
+			$total = max( 1, count( Content::assessments( $course_id ) ) );
 			$percent = min( 95, 40 + (int) floor( 55 * $completed / $total ) );
 			$next    = array( 'action' => 'submit_answer', 'label' => __( 'Complete the current exercise.', 'unikon-webmcp-demo' ) );
 		} elseif ( 'not_started' !== $state['lesson_status'] ) {

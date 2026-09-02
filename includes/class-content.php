@@ -25,10 +25,14 @@ final class Content {
 	public static function courses() {
 		return array(
 			self::COURSE_ID => array(
-			'id'          => self::COURSE_ID,
-			'title'       => __( 'Fashion Foundations: Fabric to Silhouette', 'unikon-webmcp-demo' ),
-			'description' => __( 'A focused introduction to matching fabric behaviour with a garment shape.', 'unikon-webmcp-demo' ),
-			'lesson'      => array(
+				'id'          => self::COURSE_ID,
+				'title'       => __( 'Fashion Foundations: Fabric to Silhouette', 'unikon-webmcp-demo' ),
+				'description' => __( 'A focused introduction to matching fabric behaviour with a garment shape.', 'unikon-webmcp-demo' ),
+				'hero_image'  => array(
+					'src' => 'public/images/courses/fashion-foundations-colour-wheel.png',
+					'alt' => __( 'A labelled fashion colour wheel showing primary, secondary, and intermediate hues.', 'unikon-webmcp-demo' ),
+				),
+				'lesson'      => array(
 				'id'        => self::LESSON_ID,
 				'title'     => __( 'Choosing Fabric for a First A-Line Skirt', 'unikon-webmcp-demo' ),
 				'objective' => __( 'Identify how weight, drape, and stability influence a clear A-line silhouette.', 'unikon-webmcp-demo' ),
@@ -54,6 +58,10 @@ final class Content {
 				'id'          => self::DESIGN_COURSE_ID,
 				'title'       => __( 'Fashion Design Studio: Concept to Collection', 'unikon-webmcp-demo' ),
 				'description' => __( 'Turn an observation into a coherent fashion concept using colour, silhouette, and a focused mood board.', 'unikon-webmcp-demo' ),
+				'hero_image'  => array(
+					'src' => 'public/images/courses/fashion-design-studio.jpg',
+					'alt' => __( 'Fashion learners developing ideas with fabric, sketches, and a sewing machine.', 'unikon-webmcp-demo' ),
+				),
 				'lesson'      => array(
 					'id'        => 'concept-to-collection',
 					'title'     => __( 'Building a Clear Design Direction', 'unikon-webmcp-demo' ),
@@ -62,6 +70,13 @@ final class Content {
 						__( 'Strong fashion concepts begin with a specific observation rather than a broad trend. Notice a repeated line, texture, colour relationship, or movement that can guide design decisions.', 'unikon-webmcp-demo' ),
 						__( 'Reduce the idea to three anchors: a silhouette direction, a limited colour story, and one material quality. These constraints help separate a collection concept from a collection of unrelated references.', 'unikon-webmcp-demo' ),
 						__( 'A useful mood board supports decisions. Every image should clarify shape, atmosphere, surface, or colour; remove attractive images that do not serve that purpose.', 'unikon-webmcp-demo' ),
+					),
+					'images'    => array(
+						array(
+							'src' => 'public/images/courses/fashion-design-consultation.jpg',
+							'alt' => __( 'A fashion educator discussing a design direction with a learner in a bright studio.', 'unikon-webmcp-demo' ),
+							'caption' => __( 'Discussing and editing a design direction turns visual research into deliberate choices.', 'unikon-webmcp-demo' ),
+						),
 					),
 				),
 				'exercise'    => array(
@@ -80,6 +95,10 @@ final class Content {
 				'id'          => self::SEWING_COURSE_ID,
 				'title'       => __( 'Sewing Skills: Machine Control to Finishing', 'unikon-webmcp-demo' ),
 				'description' => __( 'A guided Vimeo learning path through essential machine handling, stitching, closures, shaping, and finishing techniques.', 'unikon-webmcp-demo' ),
+				'hero_image'  => array(
+					'src' => 'public/images/courses/sewing-curved-lines.jpg',
+					'alt' => __( 'A sewing learner guiding a curved practice piece through a machine.', 'unikon-webmcp-demo' ),
+				),
 				'lesson'      => array(
 					'id'        => 'sewing-video-path',
 					'title'     => __( 'How to Use the Sewing Video Path', 'unikon-webmcp-demo' ),
@@ -88,6 +107,18 @@ final class Content {
 						__( 'Watch each demonstration with your machine switched off when handling the needle area. Pause frequently and reproduce each setup before sewing.', 'unikon-webmcp-demo' ),
 						__( 'After every video, submit a short observation about the technique. A response that identifies the important control point unlocks the next topic.', 'unikon-webmcp-demo' ),
 						__( 'Video completion is learner-confirmed through the assessment; WebMCP can navigate and stage responses but cannot claim that a video was watched.', 'unikon-webmcp-demo' ),
+					),
+					'images'    => array(
+						array(
+							'src' => 'public/images/courses/sewing-machine-handling.jpg',
+							'alt' => __( 'Hands guiding white practice fabric beneath an industrial sewing-machine presser foot.', 'unikon-webmcp-demo' ),
+							'caption' => __( 'Machine control begins with hand position, a clear seam guide, and a steady pace.', 'unikon-webmcp-demo' ),
+						),
+						array(
+							'src' => 'public/images/courses/sewing-zipper.jpg',
+							'alt' => __( 'Hands stitching a dark zipper into white practice fabric.', 'unikon-webmcp-demo' ),
+							'caption' => __( 'Later topics apply the same control principles to accurate zipper construction.', 'unikon-webmcp-demo' ),
+						),
 					),
 				),
 				'exercise'    => array(
