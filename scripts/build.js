@@ -11,9 +11,9 @@ for (const file of ['index.html', 'app.js', 'curriculum.js', 'state.js', 'webmcp
 }
 const images = [
   'assets/fashion-elearning-unikon.webp',
+  'assets/sewing-bodice-34.png',
   'public/images/courses/fashion-design-studio.webp',
-  'public/images/courses/fashion-foundations-colour-wheel.webp',
-  'public/images/courses/sewing-curved-lines.webp'
+  'public/images/courses/fashion-foundations-colour-wheel.webp'
 ];
 for (const image of images) {
   const destination = path.join(output, image);

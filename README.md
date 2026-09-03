@@ -73,11 +73,13 @@ The site has no runtime dependencies. Progress is stored in the signed-in browse
 
 Use ChatGPT's in-app browser or Chrome 149+ with `chrome://flags/#enable-webmcp-testing` enabled, according to the [Chrome WebMCP documentation](https://developer.chrome.com/docs/ai/webmcp). Open DevTools → Application → WebMCP to inspect and manually invoke the five tools.
 
+Open the [Sewing Skills judge course](https://unikon-webmcp-demo.vercel.app/#course/sewing-video-class) directly. The `#course/sewing-video-class` hash is required because this is a single-page application.
+
 Suggested journey:
 
 1. “Show my learning state.”
 2. “Open my next lesson.”
-3. “I'm ready to practise fabric choice.”
+3. “Start the exercise.”
 4. Ask your browser's learning assistant to propose and stage an answer.
 5. Review the visible form and click **Submit my answer** yourself.
 6. “What is my progress and next step?”

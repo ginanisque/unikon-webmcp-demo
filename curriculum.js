@@ -109,7 +109,7 @@
     'sewing-video-class': {
       id: 'sewing-video-class', title: 'Sewing Skills: Machine Control to Finishing',
       description: 'A guided learning path through machine handling, stitching, closures, shaping, and finishing techniques.',
-      hero: 'public/images/courses/sewing-curved-lines.webp',
+      hero: 'assets/sewing-bodice-34.png',
       lesson: { title: 'How to Use the Sewing Practice Path', objective: 'Practise one technique at a time, explain the key control point, and unlock the next topic.', body: [
         'Work with your machine switched off when handling the needle area. Reproduce each setup before sewing.',
         'After every topic, submit a short observation. A response identifying the important control point unlocks the next topic.',

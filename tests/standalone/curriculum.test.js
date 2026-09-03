@@ -36,6 +36,7 @@ test('Fashion Foundations is a complete six-layer course', () => {
 
 test('Sewing course is self-contained without external videos', () => {
   const course = curriculum()['sewing-video-class'];
+  assert.equal(course.hero, 'assets/sewing-bodice-34.png');
   assert.equal(course.assessments.length, 19);
   for (const assessment of course.assessments) {
     assert.ok(assessment.content.length > 80);
