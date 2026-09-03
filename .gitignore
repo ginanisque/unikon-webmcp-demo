@@ -3,3 +3,6 @@ node_modules/
 .DS_Store
 *.zip
 dist/
+dist-site/
+SUBMISSION.md
+project.md

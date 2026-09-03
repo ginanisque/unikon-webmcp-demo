@@ -1,24 +1,30 @@
 # Fashion Learning Studio — Unikon WebMCP Demo
 
-A human-first WordPress fashion eSchool where browser agents can navigate learning, stage responses, and recommend the next step through WebMCP—without submitting work on the learner's behalf.
+A standalone fashion eSchool with guided lessons, practical assessments, saved browser progress, and optional learning-assistant support through WebMCP.
 
-[Live demo](https://webmcp.ginani.net/) · [Devpost submission draft](SUBMISSION.md) · [Security model](docs/SECURITY.md) · [Code audit](docs/CODE-AUDIT.md)
+[Live demo](https://webmcp.ginani.net/) · [Course media](docs/COURSE-MEDIA.md)
 
-Current plugin version: **0.6.2**.
+Current website version: **0.6.2**.
+
+## Demo login
+
+- Username: `webmcp_judge`
+- Password: `demo_judge`
 
 ## What the demo includes
 
 - Three compact courses with visual lesson content and deterministic exercises
+- A six-layer Fashion Foundations path from fabric testing and grain direction to construction planning and a final garment rationale
 - A six-layer Fashion Design assessment path with quizzes, applied responses, a final essay, retries, and saved submission history
-- A 19-topic Vimeo-led Sewing Class with sequential practice responses and a final reflection essay
-- WordPress authentication and per-user progress
+- A 19-topic Sewing Class with sequential practice responses and a final reflection essay
+- Demo authentication and browser-local progress
 - A normal accessible interface that works without WebMCP
 - Five WebMCP tools: learning state, lesson opening, exercise start, answer staging, and progress guidance
-- A strict human confirmation gate: an agent can stage an answer, but only the learner can submit and save it
+- A strict human confirmation gate: a learning assistant can prepare an answer, but only the learner can submit and save it
 
 ## Why WebMCP
 
-Course interfaces are stateful: some lessons are locked, some exercises are complete, and only one action may be appropriate next. WebMCP lets the site declare those actions instead of asking an agent to infer them from page layout. Every tool acts visibly in the learner's interface, while WordPress remains authoritative for identity, prerequisites, grading, and progress.
+Course interfaces are stateful: some lessons are locked, some exercises are complete, and only one action may be appropriate next. WebMCP lets the site declare those actions instead of asking an external assistant to infer them from page layout. Every tool acts visibly in the learner's interface, while the app remains authoritative for prerequisites, deterministic grading, and browser-local progress.
 
 | Tool | Purpose |
 | --- | --- |
@@ -30,7 +36,7 @@ Course interfaces are stateful: some lessons are locked, some exercises are comp
 
 ### WebMCP registration pattern
 
-The production implementation defines all five tools in [`public/js/webmcp-tools.js`](public/js/webmcp-tools.js), feature-detects the browser API, awaits registration, and cleans registrations up with an `AbortController`. Its browser registration follows this pattern:
+The production implementation defines all five tools in [`webmcp.js`](webmcp.js), feature-detects the browser API, awaits registration, and cleans registrations up with an `AbortController`.
 
 ```js
 await document.modelContext.registerTool({
@@ -42,30 +48,26 @@ await document.modelContext.registerTool({
     additionalProperties: false,
   },
   annotations: { readOnlyHint: true },
-  async execute(input) {
-    return window.UnikonLearningApp.request('state');
+  async execute() {
+    return window.UnikonLearningApp.getState();
   },
 });
 ```
 
-The actual implementation wraps results in WebMCP structured content, validates every input, reports tool-safe errors, and registers each definition through the detected `document.modelContext` instance.
+The implementation wraps results in WebMCP structured content, reports tool-safe errors, and registers each definition through the detected `document.modelContext` instance.
 
-## Install
+## Run locally
 
-1. Copy the plugin folder to `wp-content/plugins/unikon-webmcp-demo`.
-2. Activate **Unikon WebMCP Fashion eSchool Demo** in WordPress.
-3. Open the generated **Fashion Learning Studio** page.
-4. Sign in with any WordPress user account.
+```bash
+npm run dev
+```
 
-Requirements: WordPress 6.4+, PHP 7.4+, HTTPS, and a WebMCP-capable browser for agent tools. The ordinary learning interface does not require WebMCP.
+The site has no runtime dependencies. Progress is stored in the signed-in browser's `localStorage`; demo login state lasts for the browser tab.
 
-For a focused presentation, the optional companion theme is in `theme/unikon-webmcp-theme`. Activating it sets the generated learning page as the static homepage once and removes the duplicate outer page title from the front-page layout.
+## Deploy
 
-Activation creates a public home page plus the Fashion Foundations, Fashion Design Studio, and Sewing Video Class pages, then reuses them on later activations. The home page leads visitors to WordPress login before opening the demo. Deactivation preserves progress. Explicit uninstall removes this plugin's user metadata and removes generated pages only when their shortcode content was not edited.
-
-### Configure private Vimeo lessons
-
-Open **Settings → Sewing Class Videos** and paste each Vimeo link, or paste the private JSON mapping into the bulk-import field. Links are validated, stored in the WordPress database, and never required in the public Git repository. A video topic cannot be submitted until its Vimeo URL is configured.
+- **Vercel:** import the repository and deploy with the default settings. `vercel.json` builds and publishes `dist-site` with a single-page routing fallback.
+- **Render:** create a Blueprint from the repository. `render.yaml` builds and publishes `dist-site` as a static site.
 
 ## Try WebMCP
 
@@ -76,7 +78,7 @@ Suggested journey:
 1. “Show my learning state.”
 2. “Open my next lesson.”
 3. “I'm ready to practise fabric choice.”
-4. Ask the agent to propose and stage an answer.
+4. Ask your browser's learning assistant to propose and stage an answer.
 5. Review the visible form and click **Submit my answer** yourself.
 6. “What is my progress and next step?”
 
@@ -89,16 +91,12 @@ npm test
 npm run check
 ```
 
-WordPress integration tests require the standard WordPress PHP test suite. See [docs/TESTING.md](docs/TESTING.md).
-
-For the hackathon handoff, see [SUBMISSION.md](SUBMISSION.md) and the [code audit](docs/CODE-AUDIT.md).
-
 ## Privacy and boundaries
 
-The plugin stores only a small progress record in the signed-in user's WordPress metadata. It does not use an external AI API or store agent conversations. Bundled course images were selected from course-level Moodle media; student submissions, profiles, feedback, and grading files were excluded. See [docs/SECURITY.md](docs/SECURITY.md) and [docs/COURSE-MEDIA.md](docs/COURSE-MEDIA.md).
+The website stores progress only in the learner's browser. It does not use an external AI API, database, or store agent conversations. The bundled demo credentials are intentionally public and must not be reused for a production authentication system.
 
 ## License
 
-The plugin and companion theme source code are licensed under **GPL-2.0-or-later**. See [LICENSE](LICENSE).
+The website source code and retained legacy WordPress source are licensed under **GPL-2.0-or-later**. See [LICENSE](LICENSE).
 
 Bundled course images are owned by Ginani and are not relicensed under the GPL. Their ownership declaration, provenance, and reuse terms are documented in [docs/COURSE-MEDIA.md](docs/COURSE-MEDIA.md).

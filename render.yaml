@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: unikon-fashion-learning-studio
+    runtime: static
+    buildCommand: npm run build
+    staticPublishPath: ./dist-site
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

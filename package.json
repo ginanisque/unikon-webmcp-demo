@@ -1,9 +1,11 @@
 {
-  "name": "unikon-webmcp-demo-tests",
+  "name": "unikon-fashion-learning-studio",
   "private": true,
   "version": "0.6.2",
   "scripts": {
-    "test": "node --test tests/js/*.test.js",
-    "check": "node --check public/js/learning-app.js && node --check public/js/webmcp-tools.js"
+    "dev": "node scripts/serve.js",
+    "build": "node scripts/build.js",
+    "test": "node --test tests/standalone/*.test.js",
+    "check": "node --check app.js && node --check curriculum.js && node --check state.js && node --check webmcp.js"
   }
 }

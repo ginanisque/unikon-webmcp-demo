@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Interactive fashion and sewing lessons with guided practice and learner-controlled submissions.">
+  <title>Fashion Learning Studio</title>
+  <link rel="stylesheet" href="public/css/learning-app.css">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="site-brand" href="#home" aria-label="Fashion Learning Studio home"><span></span>Fashion Learning Studio</a>
+    <nav aria-label="Primary navigation">
+      <a href="#home">Home</a>
+      <button type="button" data-login-button>Log in</button>
+      <button type="button" data-logout-button hidden>Log out</button>
+    </nav>
+  </header>
+  <div id="app"></div>
+  <dialog class="login-dialog" data-login-dialog aria-labelledby="login-title">
+    <form method="dialog" data-login-form>
+      <button class="dialog-close" type="button" data-dialog-close aria-label="Close login">×</button>
+      <p class="uwmcp-eyebrow">Demo access</p>
+      <h2 id="login-title">Enter the learning studio</h2>
+      <p>Use the demo account to save progress in this browser.</p>
+      <div class="demo-credentials"><strong>Demo account</strong><span>Username: <code>webmcp_judge</code></span><span>Password: <code>demo_judge</code></span></div>
+      <label>Username<input name="username" autocomplete="username" required></label>
+      <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+      <p class="login-error" data-login-error role="alert" hidden></p>
+      <button class="uwmcp-button" type="submit">Log in</button>
+    </form>
+  </dialog>
+  <footer class="site-footer"><p>Fashion Learning Studio · Learn, practise, and create with confidence</p></footer>
+  <script src="curriculum.js"></script>
+  <script src="state.js"></script>
+  <script src="app.js"></script>
+  <script src="webmcp.js"></script>
+</body>
+</html>
