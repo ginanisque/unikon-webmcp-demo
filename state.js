@@ -37,6 +37,17 @@
     return state.activityStatuses[assessmentId] || (index===0 ? 'in_progress' : 'locked');
   }
 
+  function progress(course, state) {
+    const value=normalize(state);
+    if(value.exerciseStatus==='completed') return {percent:100,next_step:{action:'complete',label:'Course complete—review what you learned.'}};
+    if(value.lessonStatus==='not_started') return {percent:0,next_step:{action:'open_lesson',label:'Open your first lesson.'}};
+    const completed=course.assessments.filter((assessment)=>value.activityStatuses[assessment.id]==='completed').length;
+    const percent=Math.floor(100*(1+completed)/(1+course.assessments.length));
+    if(value.exerciseStatus==='not_started') return {percent,next_step:{action:'start_exercise',label:'Start the current course exercise.'}};
+    const current=course.assessments.find((assessment,index)=>statusFor(value,assessment.id,index)==='in_progress');
+    return {percent,next_step:{action:'submit_answer',label:current ? `Complete and submit: ${current.title}.` : 'Complete the current exercise.'}};
+  }
+
   function evaluate(assessment, answer, reason) {
     const response=String(reason||'').trim();
     const text=response.toLowerCase();
@@ -61,7 +72,7 @@
     return {state:next,evaluation};
   }
 
-  const api={defaults,normalize,openLesson,startExercise,statusFor,evaluate,submit};
+  const api={defaults,normalize,openLesson,startExercise,statusFor,progress,evaluate,submit};
   global.UnikonState=api;
   if(typeof module!=='undefined'&&module.exports) module.exports=api;
 }(typeof window!=='undefined' ? window : globalThis));

@@ -29,6 +29,18 @@ test('passing work unlocks the next assessment and completion is bounded', () =>
   assert.equal(result.state.lessonStatus,'completed');
 });
 
+test('progress reflects actual lesson and assessment milestones', () => {
+  const sewing={assessments:Array.from({length:19},(_,index)=>({id:`practice-${index+1}`,title:`Practice ${index+1}`}))};
+  let value=state.openLesson(state.defaults());
+  value=state.startExercise(value,'practice-1');
+  assert.equal(state.progress(sewing,value).percent,5);
+  value.activityStatuses['practice-1']='completed';
+  value.activityStatuses['practice-2']='in_progress';
+  const progress=state.progress(sewing,value);
+  assert.equal(progress.percent,10);
+  assert.match(progress.next_step.label,/Practice 2/);
+});
+
 test('normalization repairs malformed stored state', () => {
   assert.deepEqual(state.normalize({lessonStatus:'broken',activityStatuses:null,submissions:'bad'}),state.defaults());
 });

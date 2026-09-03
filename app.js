@@ -28,14 +28,10 @@
   }
 
   function summary(course, state) {
-    if (state.exerciseStatus === 'completed') return {percent: 100, next_step: {action:'complete', label:'Course complete—review what you learned.'}};
-    if (state.exerciseStatus === 'in_progress') {
-      const completed = Object.values(state.activityStatuses).filter((status) => status === 'completed').length;
-      return {percent: Math.min(95, 40 + Math.floor(55 * completed / course.assessments.length)), next_step:{action:'submit_answer',label:'Complete the current exercise.'}};
-    }
-    if (state.lessonStatus !== 'not_started') return {percent:35,next_step:{action:'start_exercise',label:'Start the current course exercise.'}};
-    return {percent:0,next_step:{action:'open_lesson',label:'Open your first lesson.'}};
+    return stateModel.progress(course,state);
   }
+
+  function stagedState(){const panel=app.querySelector('[data-exercise-form] [data-confirmation]:not([hidden])');const form=panel&&panel.closest('[data-exercise-form]');return{staged_answer:Boolean(form),staged_activity_id:form?form.dataset.activityId:null};}
 
   function publicState(course = activeCourse, state = getState(course)) {
     const progress = summary(course, state);
@@ -124,6 +120,6 @@
   document.querySelector('[data-logout-button]').addEventListener('click',()=>{sessionStorage.removeItem(SESSION_KEY); updateAuthButtons(); location.hash='home';});
   loginForm.addEventListener('submit',(event)=>{event.preventDefault();const fields=new FormData(loginForm);if(fields.get('username')==='webmcp_judge'&&fields.get('password')==='demo_judge'){sessionStorage.setItem(SESSION_KEY,'webmcp_judge');loginDialog.close();loginForm.reset();updateAuthButtons();const target=pendingCourseId||((location.hash.startsWith('#course/'))?location.hash.split('/')[1]:null)||'fashion-foundations';pendingCourseId=null;const nextHash=`#course/${target}`;if(location.hash===nextHash)route();else location.hash=nextHash;}else{const error=loginForm.querySelector('[data-login-error]');error.textContent='The username or password is incorrect.';error.hidden=false;}});
   function updateAuthButtons(){document.querySelector('[data-login-button]').hidden=signedIn();document.querySelector('[data-logout-button]').hidden=!signedIn();}
-  window.UnikonLearningApp={getState:()=>activeCourse ? publicState() : null,getActiveCourse:()=>activeCourse,openLesson,startExercise,stageAnswer,summary:()=>activeCourse ? summary(activeCourse,getState()) : null};
+  window.UnikonLearningApp={getState:()=>activeCourse ? {...publicState(),...stagedState()} : null,getActiveCourse:()=>activeCourse,openLesson,startExercise,stageAnswer,summary:()=>activeCourse ? {...summary(activeCourse,getState()),...stagedState()} : null};
   addEventListener('hashchange',route); updateAuthButtons(); route();
 }());

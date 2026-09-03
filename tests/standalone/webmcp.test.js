@@ -26,3 +26,10 @@ test('rejects unknown and malformed staged answers', () => {
   assert.throws(()=>api.validateAnswer({activity_id:'locked',reason:'Long enough response'}),/listed activity/);
   assert.throws(()=>api.validateAnswer({activity_id:'fabric-choice',reason:'short'}),/12 to 1200/);
 });
+
+test('progress tool reports explicitly when no answer is staged', async () => {
+  const progressTool=tools().definitions({summary:()=>({percent:10,staged_answer:false,staged_activity_id:null,next_step:{label:'Complete practice 2.'}})}).find((tool)=>tool.name==='get_progress_and_next_step');
+  const output=await progressTool.execute({});
+  assert.match(output.content[0].text,/No response is currently staged/);
+  assert.equal(output.structuredContent.percent,10);
+});
