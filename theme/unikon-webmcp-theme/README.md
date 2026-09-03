@@ -1,5 +1,7 @@
 # Unikon WebMCP Studio theme
 
+> Legacy reference: this optional WordPress theme is retained for the earlier plugin version and is not used by the standalone Vercel deployment.
+
 A minimal companion block theme for the Unikon WebMCP Fashion eSchool Demo plugin.
 
 Version 0.3.0 focuses the new public landing page without adding a duplicate outer title.

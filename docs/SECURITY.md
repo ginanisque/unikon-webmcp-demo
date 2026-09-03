@@ -1,5 +1,7 @@
 # Security and privacy
 
+> Legacy reference: this document describes the retained WordPress implementation, not the standalone Vercel application. The current website uses a public demonstration gate and browser-local progress as documented in the root README.
+
 ## Trust boundaries
 
 The WordPress server is authoritative for identity, state transitions, attempts, and grading. Browser state and agent arguments are untrusted. Every REST route requires a signed-in WordPress session and a valid REST nonce; the server derives the learner ID from that session.

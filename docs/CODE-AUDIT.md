@@ -1,5 +1,7 @@
 # Code and submission audit
 
+> Archived audit: this review covers the earlier WordPress deployment. It is retained as implementation history and does not describe the current standalone Vercel application.
+
 Audit date: September 2, 2026
 
 Scope: WordPress plugin and companion theme source, REST routes, browser tools, progress storage, Vimeo configuration, tests, release package, repository state, and the public site's unauthenticated HTTP behavior.

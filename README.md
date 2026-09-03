@@ -2,7 +2,7 @@
 
 A standalone fashion eSchool with guided lessons, practical assessments, saved browser progress, and optional learning-assistant support through WebMCP.
 
-[Live demo](https://webmcp.ginani.net/) · [Course media](docs/COURSE-MEDIA.md)
+[Live demo](https://unikon-webmcp-demo.vercel.app/) · [Course media](docs/COURSE-MEDIA.md)
 
 Current website version: **0.6.2**.
 

@@ -1,5 +1,7 @@
 # Testing
 
+> Legacy reference: the WordPress/PHP sections below apply only to the retained plugin source. Current standalone checks are run with `npm test`, `npm run check`, and `npm run build` from the repository root.
+
 ## JavaScript
 
 Run `npm test` and `npm run check`. The tests verify exactly five registrations, strict schemas, annotations, awaited lifecycle registration, abort cleanup, graceful failure, and the non-committing staged-answer path.
