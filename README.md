@@ -2,7 +2,7 @@
 
 A standalone fashion eSchool with guided lessons, practical assessments, saved browser progress, and formative feedback through WebMCP.
 
-[Live demo](https://unikon-webmcp-demo.vercel.app/) · [Demo video](https://vimeo.com/1223897283?share=copy&fl=sv&fe=ci) · [Course media](docs/COURSE-MEDIA.md)
+[Live demo](https://unikon-webmcp-demo.vercel.app/) · [Demo video](https://vimeo.com/1223906403) · [Course media](docs/COURSE-MEDIA.md)
 
 Current website version: **0.6.2**.
 
