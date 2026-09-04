@@ -31,8 +31,6 @@
     return stateModel.progress(course,state);
   }
 
-  function stagedState(){const panel=app.querySelector('[data-exercise-form] [data-confirmation]:not([hidden])');const form=panel&&panel.closest('[data-exercise-form]');return{staged_answer:Boolean(form),staged_activity_id:form?form.dataset.activityId:null};}
-
   function publicState(course = activeCourse, state = getState(course)) {
     const progress = summary(course, state);
     const assessments=course.assessments.map((assessment,index)=>({id:assessment.id,title:assessment.title,status:stateModel.statusFor(state,assessment.id,index)}));
@@ -44,7 +42,7 @@
       exercise: {status: state.exerciseStatus},
       assessments,
       current_assessment: current ? {id:current.id,title:current.title,prompt:current.prompt,type:current.type,choices:Object.entries(current.choices).map(([id,label])=>({id,label})),min_length:current.minLength,max_length:current.maxLength} : null,
-      allowed_actions: progress.next_step.action==='open_lesson' ? ['open_next_lesson'] : progress.next_step.action==='start_exercise' ? ['start_exercise'] : progress.next_step.action==='submit_answer' ? ['stage_exercise_answer'] : [],
+      allowed_actions: progress.next_step.action==='open_lesson' ? ['open_next_lesson'] : progress.next_step.action==='start_exercise' ? ['start_exercise'] : progress.next_step.action==='submit_answer' ? ['review_current_answer'] : [],
       submission_count: state.submissions.length,
       progress
     };
@@ -61,7 +59,7 @@
     const choices = Object.entries(assessment.choices).map(([value,label]) => `<label class="uwmcp-choice"><input type="radio" name="answer_id" value="${value}" required> <span>${escapeHtml(label)}</span></label>`).join('');
     const reading=assessment.content ? `<div class="uwmcp-topic-note"><strong>Technique guide</strong><p>${escapeHtml(assessment.content)}</p></div>` : '';
     const guidance=`Write ${assessment.minLength}–${assessment.maxLength} characters${assessment.type==='essay' ? ' and connect at least three ideas from the lesson' : ' and support your response with a specific idea from the lesson'}.`;
-    return `<article class="uwmcp-assessment" data-assessment="${assessment.id}" data-status="${status}" ${status === 'locked' ? 'hidden' : ''}><p class="uwmcp-kicker">${assessment.type.replace('_',' ')}</p><h3>${escapeHtml(assessment.title)}</h3>${reading}<p>${escapeHtml(assessment.prompt)}</p>${status === 'completed' ? '<p class="uwmcp-complete-label">Passed</p>' : ''}<form data-exercise-form data-activity-id="${assessment.id}" ${status === 'completed' ? 'hidden' : ''}>${choices ? `<fieldset><legend>Choose one answer</legend>${choices}</fieldset>` : ''}<label><strong>${assessment.type === 'essay' ? 'Write your essay' : 'Explain your response'}</strong><textarea name="reason" rows="${assessment.type === 'essay' ? 10 : 4}" minlength="${assessment.minLength}" maxlength="${assessment.maxLength}" aria-describedby="guide-${assessment.id} count-${assessment.id}" required></textarea></label><div class="uwmcp-response-meta"><p id="guide-${assessment.id}">${guidance}</p><p id="count-${assessment.id}" data-character-count>0 / ${assessment.maxLength}</p></div><div class="uwmcp-confirmation" data-confirmation hidden tabindex="-1"><strong>Ready for your review</strong><p>Your learning assistant prepared this response. Nothing is graded or saved until you choose Submit my answer.</p></div><button class="uwmcp-button" type="submit">Submit my answer</button></form><div class="uwmcp-feedback" data-feedback hidden tabindex="-1"></div></article>`;
+    return `<article class="uwmcp-assessment" data-assessment="${assessment.id}" data-status="${status}" ${status === 'locked' ? 'hidden' : ''}><p class="uwmcp-kicker">${assessment.type.replace('_',' ')}</p><h3>${escapeHtml(assessment.title)}</h3>${reading}<p>${escapeHtml(assessment.prompt)}</p>${status === 'completed' ? '<p class="uwmcp-complete-label">Passed</p>' : ''}<form data-exercise-form data-activity-id="${assessment.id}" ${status === 'completed' ? 'hidden' : ''}>${choices ? `<fieldset><legend>Choose one answer</legend>${choices}</fieldset>` : ''}<label><strong>${assessment.type === 'essay' ? 'Write your essay' : 'Explain your response'}</strong><textarea name="reason" rows="${assessment.type === 'essay' ? 10 : 4}" minlength="${assessment.minLength}" maxlength="${assessment.maxLength}" aria-describedby="guide-${assessment.id} count-${assessment.id}" required></textarea></label><div class="uwmcp-response-meta"><p id="guide-${assessment.id}">${guidance}</p><p id="count-${assessment.id}" data-character-count>0 / ${assessment.maxLength}</p></div><button class="uwmcp-button" type="submit">Submit my answer</button></form><div class="uwmcp-feedback" data-feedback hidden tabindex="-1"></div></article>`;
   }
 
   function courseView(id) {
@@ -82,17 +80,7 @@
   function openLesson() { const state=stateModel.openLesson(getState()); saveState(state); refresh('Lesson opened.'); return publicState(); }
   function startExercise() { const state=stateModel.startExercise(getState(),activeCourse.assessments[0].id); saveState(state); refresh('Exercise started.'); return publicState(); }
 
-  function stageAnswer(activityId, answerId, reason) {
-    if(typeof activityId!=='string'||typeof reason!=='string'||reason.trim().length<12||reason.trim().length>1200) throw Object.assign(new Error('Provide a valid activity and a response between 12 and 1200 characters.'),{code:'invalid_parameters'});
-    const card=app.querySelector(`[data-assessment="${CSS.escape(activityId)}"]`);
-    const form=card&&card.dataset.status==='in_progress'&&!card.hidden ? card.querySelector('[data-exercise-form]') : null;
-    if (!form) throw Object.assign(new Error('The exercise is not currently available.'),{code:'invalid_state'});
-    const radio=answerId ? form.querySelector(`[name="answer_id"][value="${CSS.escape(answerId)}"]`) : null;
-    if (answerId && !radio) throw Object.assign(new Error('That answer is not available.'),{code:'invalid_parameters'});
-    if (radio) radio.checked=true; form.elements.reason.value=reason.trim(); updateCharacterCount(form.elements.reason);
-    const panel=form.querySelector('[data-confirmation]'); panel.hidden=false; panel.focus();
-    announce('Answer staged for review.'); return {staged:true,committed:false,message:'Learner confirmation is required.'};
-  }
+  function reviewCurrentAnswer(){const card=app.querySelector('[data-assessment][data-status="in_progress"]');const form=card&&card.querySelector('[data-exercise-form]');if(!form)throw Object.assign(new Error('Open the current exercise before requesting feedback.'),{code:'invalid_state'});const assessment=activeCourse.assessments.find((item)=>item.id===form.dataset.activityId);const fields=new FormData(form);const response=String(fields.get('reason')||'');if(!response.trim())throw Object.assign(new Error('Write your answer in the visible form before requesting feedback.'),{code:'answer_required'});const review=stateModel.review(assessment,fields.get('answer_id')||'',response);const panel=card.querySelector('[data-feedback]');panel.hidden=false;panel.classList.toggle('is-success',review.ready);panel.textContent=review.feedback;panel.focus();announce(review.feedback);return{activity_id:assessment.id,ready_to_submit:review.ready,feedback:review.feedback,issues:review.issues,committed:false};}
 
   function bindCourseEvents() {
     app.querySelectorAll('[data-action]').forEach((button)=>button.addEventListener('click',()=>button.dataset.action==='open-lesson' ? openLesson() : startExercise()));
@@ -120,6 +108,6 @@
   document.querySelector('[data-logout-button]').addEventListener('click',()=>{sessionStorage.removeItem(SESSION_KEY); updateAuthButtons(); location.hash='home';});
   loginForm.addEventListener('submit',(event)=>{event.preventDefault();const fields=new FormData(loginForm);if(fields.get('username')==='webmcp_judge'&&fields.get('password')==='demo_judge'){sessionStorage.setItem(SESSION_KEY,'webmcp_judge');loginDialog.close();loginForm.reset();updateAuthButtons();const target=pendingCourseId||((location.hash.startsWith('#course/'))?location.hash.split('/')[1]:null)||'fashion-foundations';pendingCourseId=null;const nextHash=`#course/${target}`;if(location.hash===nextHash)route();else location.hash=nextHash;}else{const error=loginForm.querySelector('[data-login-error]');error.textContent='The username or password is incorrect.';error.hidden=false;}});
   function updateAuthButtons(){document.querySelector('[data-login-button]').hidden=signedIn();document.querySelector('[data-logout-button]').hidden=!signedIn();}
-  window.UnikonLearningApp={getState:()=>activeCourse ? {...publicState(),...stagedState()} : null,getActiveCourse:()=>activeCourse,openLesson,startExercise,stageAnswer,summary:()=>activeCourse ? {...summary(activeCourse,getState()),...stagedState()} : null};
+  window.UnikonLearningApp={getState:()=>activeCourse ? publicState() : null,getActiveCourse:()=>activeCourse,openLesson,startExercise,reviewCurrentAnswer,summary:()=>activeCourse ? summary(activeCourse,getState()) : null};
   addEventListener('hashchange',route); updateAuthButtons(); route();
 }());

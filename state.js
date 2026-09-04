@@ -56,6 +56,21 @@
     return {passed,feedback:passed ? 'This response meets the criteria. Continue to the next assessment.' : 'Review this layer and strengthen the response with specific evidence before trying again.'};
   }
 
+  function review(assessment, answer, reason) {
+    const response=String(reason||'').trim();
+    const text=response.toLowerCase();
+    const needed=assessment.type==='essay' ? 3 : 1;
+    const matched=assessment.keywords.filter((word)=>text.includes(word));
+    const issues=[];
+    if(Object.keys(assessment.choices).length&&!answer) issues.push('Select an answer before requesting feedback.');
+    else if(assessment.correct!==null&&assessment.correct!==answer) issues.push('Reconsider the selected option using the lesson and technique guide.');
+    if(response.length<assessment.minLength) issues.push(`Add at least ${assessment.minLength-response.length} more characters so your reasoning is complete.`);
+    if(response.length>assessment.maxLength) issues.push(`Shorten the response by at least ${response.length-assessment.maxLength} characters.`);
+    if(matched.length<needed) issues.push(`Connect your explanation more clearly to the course ideas, such as ${assessment.keywords.slice(0,4).join(', ')}.`);
+    const ready=issues.length===0;
+    return {ready,issues,feedback:ready?'Your answer addresses the key criteria and is ready for your final review before submission.':issues.join(' ')};
+  }
+
   function submit(state, course, activityId, answer, reason, submittedAt) {
     const next=normalize(state);
     const index=course.assessments.findIndex((item)=>item.id===activityId);
@@ -72,7 +87,7 @@
     return {state:next,evaluation};
   }
 
-  const api={defaults,normalize,openLesson,startExercise,statusFor,progress,evaluate,submit};
+  const api={defaults,normalize,openLesson,startExercise,statusFor,progress,evaluate,review,submit};
   global.UnikonState=api;
   if(typeof module!=='undefined'&&module.exports) module.exports=api;
 }(typeof window!=='undefined' ? window : globalThis));

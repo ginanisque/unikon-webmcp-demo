@@ -41,6 +41,15 @@ test('progress reflects actual lesson and assessment milestones', () => {
   assert.match(progress.next_step.label,/Practice 2/);
 });
 
+test('formative review gives actionable feedback without changing state', () => {
+  const assessment=course.assessments[0];
+  const weak=state.review(assessment,'yes','Too short');
+  assert.equal(weak.ready,false);
+  assert.ok(weak.issues.length>0);
+  const strong=state.review(assessment,'yes','A stable fabric supports the shape.');
+  assert.equal(strong.ready,true);
+});
+
 test('normalization repairs malformed stored state', () => {
   assert.deepEqual(state.normalize({lessonStatus:'broken',activityStatuses:null,submissions:'bad'}),state.defaults());
 });

@@ -13,23 +13,26 @@ function tools() {
   return window.UnikonWebMCPTools;
 }
 
-test('defines exactly five tools with strict staged-answer enums', () => {
+test('defines exactly five tools including formative answer review', () => {
   const definitions=tools().definitions({});
   assert.equal(definitions.length,5);
-  const staged=definitions.find((tool)=>tool.name==='stage_exercise_answer');
-  assert.deepEqual(Array.from(staged.inputSchema.properties.activity_id.enum),['fabric-choice']);
-  assert.equal(staged.inputSchema.additionalProperties,false);
+  const review=definitions.find((tool)=>tool.name==='review_current_answer');
+  assert.ok(review);
+  assert.deepEqual(Object.keys(review.inputSchema.properties),[]);
+  assert.equal(review.inputSchema.additionalProperties,false);
+  assert.equal(review.annotations.untrustedContentHint,true);
 });
 
-test('rejects unknown and malformed staged answers', () => {
-  const api=tools();
-  assert.throws(()=>api.validateAnswer({activity_id:'locked',reason:'Long enough response'}),/listed activity/);
-  assert.throws(()=>api.validateAnswer({activity_id:'fabric-choice',reason:'short'}),/12 to 1200/);
+test('review tool returns feedback without committing work', async () => {
+  const reviewTool=tools().definitions({reviewCurrentAnswer:()=>({activity_id:'fabric-choice',ready_to_submit:false,feedback:'Explain how stability supports the silhouette.',issues:['Add evidence.'],committed:false})}).find((tool)=>tool.name==='review_current_answer');
+  const output=await reviewTool.execute({});
+  assert.equal(output.structuredContent.committed,false);
+  assert.match(output.content[0].text,/stability/);
 });
 
-test('progress tool reports explicitly when no answer is staged', async () => {
-  const progressTool=tools().definitions({summary:()=>({percent:10,staged_answer:false,staged_activity_id:null,next_step:{label:'Complete practice 2.'}})}).find((tool)=>tool.name==='get_progress_and_next_step');
+test('progress tool reports actual completion and next step', async () => {
+  const progressTool=tools().definitions({summary:()=>({percent:10,next_step:{label:'Complete practice 2.'}})}).find((tool)=>tool.name==='get_progress_and_next_step');
   const output=await progressTool.execute({});
-  assert.match(output.content[0].text,/No response is currently staged/);
+  assert.match(output.content[0].text,/Complete practice 2/);
   assert.equal(output.structuredContent.percent,10);
 });

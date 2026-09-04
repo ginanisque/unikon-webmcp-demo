@@ -1,6 +1,6 @@
 # Fashion Learning Studio — Unikon WebMCP Demo
 
-A standalone fashion eSchool with guided lessons, practical assessments, saved browser progress, and optional learning-assistant support through WebMCP.
+A standalone fashion eSchool with guided lessons, practical assessments, saved browser progress, and formative feedback through WebMCP.
 
 [Live demo](https://unikon-webmcp-demo.vercel.app/) · [Demo video](https://vimeo.com/1223897283?share=copy&fl=sv&fe=ci) · [Course media](docs/COURSE-MEDIA.md)
 
@@ -19,8 +19,8 @@ Current website version: **0.6.2**.
 - A 19-topic Sewing Class with sequential practice responses and a final reflection essay
 - Demo authentication and browser-local progress
 - A normal accessible interface that works without WebMCP
-- Five WebMCP tools: learning state, lesson opening, exercise start, answer staging, and progress guidance
-- A strict human confirmation gate: a learning assistant can prepare an answer, but only the learner can submit and save it
+- Five WebMCP tools: learning state, lesson opening, exercise start, answer review, and progress guidance
+- A strict human confirmation gate: the learner writes and submits the answer while the learning assistant provides non-committing feedback
 
 ## Why WebMCP
 
@@ -31,7 +31,7 @@ Course interfaces are stateful: some lessons are locked, some exercises are comp
 | `get_learning_state` | Read current course state and allowed actions |
 | `open_next_lesson` | Open the available lesson visibly |
 | `start_exercise` | Begin the exercise after prerequisites are met |
-| `stage_exercise_answer` | Fill an unlocked response for learner review—never submit it |
+| `review_current_answer` | Review the learner's visible response and explain what could be improved—never submit it |
 | `get_progress_and_next_step` | Return completion and one recommended next action |
 
 ### WebMCP registration pattern
@@ -80,9 +80,10 @@ Suggested journey:
 1. “Show my learning state.”
 2. “Open my next lesson.”
 3. “Start the exercise.”
-4. Ask your browser's learning assistant to propose and stage an answer.
-5. Review the visible form and click **Submit my answer** yourself.
-6. “What is my progress and next step?”
+4. Write your own answer in the visible form.
+5. “Review my current answer and advise me what to improve.”
+6. Improve the response, then click **Submit my answer** yourself.
+7. “What is my progress and next step?”
 
 ## Development
 
